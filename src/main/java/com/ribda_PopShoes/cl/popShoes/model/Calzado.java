@@ -29,6 +29,16 @@ public class Calzado {
     private Integer talla;
 
     @ManyToOne
-    @JoinColumn(name = "id_estilo")
+    @JoinColumn(name = "id_estilo", nullable = false)
     private Estilo estilo;
+
+    @ManyToOne
+    @JoinColumn(name = "id_categoria", nullable = false)
+    private Categoria categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "id_marca", nullable = false)
+    private Marca marca;
+
+    
 }

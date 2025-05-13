@@ -1,5 +1,21 @@
 package com.ribda_PopShoes.cl.popShoes.repository;
 
-public interface ColorRepository {
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.ribda_PopShoes.cl.popShoes.model.Color;
+
+@Repository
+public interface ColorRepository extends JpaRepository<Color, Long> {
+    @Query("""
+            SELECT c, c.estilo.nombre FROM color e
+            """)
+
+    List<Object[]> findColorConEstilo();
+
+    List<Color> findByEstiloId(Long estiloID);
 
 }

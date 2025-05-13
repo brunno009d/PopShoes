@@ -13,7 +13,7 @@ public interface InfluencerRepository extends JpaRepository<Influencer, Long> {
     @Query("""
             SELECT i, i.estilo.nombre,  FROM i
             """)
-    List<Object[]> findByInfluencerConEstilo();
+    List<Object[]> findInfluencerConEstilo();
 
     List<Influencer> findByEstiloId(Long estiloId);
 }

@@ -1,6 +1,11 @@
 package com.ribda_PopShoes.cl.popShoes.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -80,5 +85,37 @@ public class UsuarioService {
             }else{
             return null;
         }
+    }
+
+     public List<Map<String, Object>> obtenerUsuarioConNombres() {
+        List<Object[]> resultados = usuarioRepository.findUsuarioConEstiloYRol();
+        List<Map<String, Object>> lista = new ArrayList<>();
+
+        for (Object[] fila : resultados) {
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("usuario", fila[0]);
+            datos.put("estilo", fila[1]);
+            datos.put("rol", fila[2]);
+            lista.add(datos);
+        }
+
+        return lista;
+    }
+
+    public List<Usuario> obtenerUsuariosPorEstiloId(Long estiloId) {
+        return usuarioRepository.findByEstiloId(estiloId);
+    }
+    public List<Usuario> obtenerUsuarioPorRolId(Long rolId) {
+        return usuarioRepository.findByRolId(rolId);
+    }
+    public List<Usuario> obtenerUsuariosPorEstiloIdYRolId(Long estiloId, Long rolId) {
+        return usuarioRepository.findByEstiloId(estiloId).stream()
+                .filter(usuario -> usuario.getRol().getId().equals(rolId))
+                .collect(Collectors.toList());
+    }
+    public List<Usuario> obtenerUsuariosPorRolIdYEstiloId(Long rolId, Long estiloId) {
+        return usuarioRepository.findByRolId(rolId).stream()
+                .filter(usuario -> usuario.getEstilo().getId().equals(estiloId))
+                .collect(Collectors.toList());
     }
 }

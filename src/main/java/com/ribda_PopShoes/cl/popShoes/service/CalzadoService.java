@@ -29,7 +29,7 @@ public class CalzadoService {
         calzadoRepository.deleteById(id);
     }
 
-    public Calzado actualizarColor(Long id, Calzado calzado){
+    public Calzado actualizarCalzado(Long id, Calzado calzado){
         Calzado calzadoEx = calzadoRepository.findById(id).orElse(null);
         if(calzadoEx != null){
             calzadoEx.setNombre(calzado.getNombre());
@@ -41,7 +41,7 @@ public class CalzadoService {
         }else{return null;}
     }
 
-    public Calzado actualizarColorParcial(Long id, Calzado calzado){
+    public Calzado actualizarCalzadoParcial(Long id, Calzado calzado){
         Calzado calzadoEx = calzadoRepository.findById(id).orElse(null);
         if(calzadoEx != null){
             if(calzadoEx.getNombre() != null){

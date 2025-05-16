@@ -17,7 +17,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
             """)
     List<Object[]> findUsuarioConEstiloYRol();
     
-    List<Usuario> findByEstiloId();
-    List<Usuario> findByRolId();
+    List<Usuario> findByEstiloId(Long estiloId);
+    List<Usuario> findByRolId(Long rolId);
 
 }

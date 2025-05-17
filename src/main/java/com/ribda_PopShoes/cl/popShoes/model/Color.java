@@ -1,5 +1,7 @@
 package com.ribda_PopShoes.cl.popShoes.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +27,6 @@ public class Color {
     @Column(nullable = false)
     private String nombre;
 
-    @ManyToMany
-    @JoinColumn(name= "id_estilo", nullable = false)
-    private Estilo estilo;
+    @ManyToMany(mappedBy = "colores")
+    private List<Estilo> estilos;
 }

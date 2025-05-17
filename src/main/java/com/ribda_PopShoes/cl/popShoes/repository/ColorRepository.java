@@ -11,11 +11,11 @@ import com.ribda_PopShoes.cl.popShoes.model.Color;
 @Repository
 public interface ColorRepository extends JpaRepository<Color, Long> {
     @Query("""
-            SELECT c, c.estilo.nombre FROM color e
+            SELECT c, e.nombre FROM Color c JOIN c.estilos e
             """)
 
     List<Object[]> findColorConEstilo();
 
-    List<Color> findByEstiloId(Long estiloID);
+    List<Color> findByEstilos_Id(Long estiloId);
 
 }

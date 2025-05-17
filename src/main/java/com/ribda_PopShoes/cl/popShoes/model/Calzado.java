@@ -39,6 +39,6 @@ public class Calzado {
     @ManyToOne
     @JoinColumn(name = "id_marca", nullable = false)
     private Marca marca;
-
+    
     
 }

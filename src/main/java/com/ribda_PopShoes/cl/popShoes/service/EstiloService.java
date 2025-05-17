@@ -38,8 +38,8 @@ public class EstiloService {
         if(estiloEx != null){
             estiloEx.setNombre(estilo.getNombre());
             estiloEx.setDescripcion(estilo.getDescripcion());
-            estiloEx.setInfluencer(estilo.getInfluencer());
-            estiloEx.setColor(estilo.getColor());
+            estiloEx.setInfluencers(estilo.getInfluencers());
+            estiloEx.setColores(estilo.getColores());
             return estiloRepository.save(estiloEx);
         }else{return null;}
     }
@@ -53,11 +53,11 @@ public class EstiloService {
             if(estiloEx.getDescripcion() != null){
                 estiloEx.setDescripcion(estilo.getDescripcion());
             }
-            if(estiloEx.getInfluencer() != null){
-                estiloEx.setInfluencer(estilo.getInfluencer());
+            if(estiloEx.getInfluencers() != null){
+                estiloEx.setInfluencers(estilo.getInfluencers());
             }
-            if(estiloEx.getColor() != null){
-                estiloEx.setColor(estilo.getColor());
+            if(estiloEx.getColores() != null){
+                estiloEx.setColores(estilo.getColores());
             }
             return estiloRepository.save(estiloEx);
         }else{return null;}
@@ -79,20 +79,11 @@ public class EstiloService {
     }
 
     public List<Estilo> obtenerEstiloPorInfluencerId(Long influencerId) {
-        return estiloRepository.findByInfluencerId(influencerId);
+        return estiloRepository.findByInfluencers_Id(influencerId);
     }
     public List<Estilo> obtenerEstiloPorColorId(Long colorId) {
-        return estiloRepository.findByColorId(colorId);
+        return estiloRepository.findByColores_Id(colorId);
     }
-    public List<Estilo> obtenerEstilosPorInfluencerIdYColorId(Long influencerId, Long colorId) {
-        return estiloRepository.findByInfluencerId(influencerId).stream()
-                .filter(estilo -> estilo.getColor().getId().equals(colorId))
-                .collect(Collectors.toList());
-    }
-    public List<Estilo> obtenerEstilosPorRolIdYEstiloId(Long influencerId, Long colorId) {
-        return estiloRepository.findByColorId(colorId).stream()
-                .filter(estilo -> estilo.getInfluencer().getId().equals(influencerId))
-                .collect(Collectors.toList());
-    }
+
 
 }

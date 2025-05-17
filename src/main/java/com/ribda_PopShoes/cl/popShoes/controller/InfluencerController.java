@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,7 +55,7 @@ public class InfluencerController {
         return ResponseEntity.ok(actInfluencer);
     }
 
-    @PutMapping("/id")
+    @PatchMapping("/id")
     public ResponseEntity<Influencer> editar(Long id, @RequestBody Influencer influencer){
         Influencer actInfluencer = influencerService.actualizarInfluencerParcial(id, influencer);
         if (actInfluencer == null){

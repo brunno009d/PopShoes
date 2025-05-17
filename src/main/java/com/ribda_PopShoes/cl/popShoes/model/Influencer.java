@@ -1,5 +1,7 @@
 package com.ribda_PopShoes.cl.popShoes.model;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,7 +31,6 @@ public class Influencer {
     @Column(nullable = false)
     private String descripcion;
 
-    @ManyToMany
-    @JoinColumn(name= "id_estilo", nullable = false)
-    private Estilo estilo;
+    @ManyToMany(mappedBy = "influencers")
+    private List<Estilo> estilos;
 }

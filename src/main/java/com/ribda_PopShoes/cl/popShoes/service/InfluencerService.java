@@ -35,7 +35,7 @@ public class InfluencerService {
         if(influencerEx != null){
             influencerEx.setNombre(influencer.getNombre());
             influencerEx.setDescripcion(influencer.getDescripcion());
-            influencerEx.setEstilo(influencer.getEstilo());
+            influencerEx.setEstilos(influencer.getEstilos());
             return influencerRepository.save(influencerEx);
         }else{return null;}
     }
@@ -49,8 +49,8 @@ public class InfluencerService {
             if(influencerEx.getDescripcion() != null){
                 influencerEx.setDescripcion(influencer.getDescripcion());
             }
-            if(influencerEx.getEstilo() != null){
-                influencerEx.setEstilo(influencer.getEstilo());
+            if(influencerEx.getEstilos() != null){
+                influencerEx.setEstilos(influencer.getEstilos());
             }
             return influencerRepository.save(influencerEx);
         }else{return null;}

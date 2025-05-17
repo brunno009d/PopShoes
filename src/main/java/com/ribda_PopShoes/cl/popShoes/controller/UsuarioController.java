@@ -17,7 +17,7 @@ import com.ribda_PopShoes.cl.popShoes.model.Usuario;
 import com.ribda_PopShoes.cl.popShoes.service.UsuarioService;
 
 @RestController
-@RequestMapping("api/v1/usuarios")
+@RequestMapping("/api/v1/usuarios")
 public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;

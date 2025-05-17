@@ -17,7 +17,7 @@ import com.ribda_PopShoes.cl.popShoes.model.Color;
 import com.ribda_PopShoes.cl.popShoes.service.ColorService;
 
 @RestController
-@RequestMapping("api/v1/usuarios")
+@RequestMapping("/api/v1/colores")
 public class ColorController {
     @Autowired
     private ColorService colorService;

@@ -11,11 +11,11 @@ import com.ribda_PopShoes.cl.popShoes.model.Estilo;
 @Repository
 public interface EstiloRepository extends JpaRepository<Estilo, Long>{
     @Query("""
-            SELECT e, e.influencer.nombre, e.color.nombre FROM Estilo e
+            SELECT e, e.nombre, c.nombre FROM Estilo e JOIN e.influencers i JOIN e.colores c
             """)
 
     List<Object[]> findEstiloConInfluencerYColor();
 
-    List<Estilo> findByInfluencerId(Long influencerId);
-    List<Estilo> findByColorId(Long colorId);
+    List<Estilo> findByInfluencers_Id(Long influencerId);
+    List<Estilo> findByColores_Id(Long colorId);
 }

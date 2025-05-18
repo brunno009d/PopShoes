@@ -27,10 +27,10 @@ public class Influencer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String descripcion;
 
     @ManyToMany(mappedBy = "influencers")

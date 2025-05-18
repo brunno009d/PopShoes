@@ -25,10 +25,10 @@ public class Estilo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String descripcion;
 
     @ManyToMany
@@ -46,13 +46,5 @@ public class Estilo {
         inverseJoinColumns = @JoinColumn(name = "FK_COLOR", nullable = false)
     )
     private List<Color> colores;
-    /* 
-    @ManyToMany
-    @JoinColumn(name= "id_influencer", nullable = false)
-    private Influencer influencer;
 
-    @ManyToMany
-    @JoinColumn(name= "id_color", nullable = false)
-    private Color color;
-    */
 }

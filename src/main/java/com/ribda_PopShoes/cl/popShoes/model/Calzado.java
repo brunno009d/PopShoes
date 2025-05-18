@@ -1,11 +1,16 @@
 package com.ribda_PopShoes.cl.popShoes.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -22,10 +27,10 @@ public class Calzado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String nombre;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 2)
     private Integer talla;
 
     @ManyToOne
@@ -40,5 +45,12 @@ public class Calzado {
     @JoinColumn(name = "id_marca", nullable = false)
     private Marca marca;
     
-    
+    @ManyToMany(mappedBy = "calzados")
+    @JsonIgnore
+    private List<Usuario> usuarios;
+    /*
+    @ManyToMany(mappedBy = "influencers")
+    @JsonIgnore
+    private List<Estilo> estilos;
+     */
 }

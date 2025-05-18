@@ -26,7 +26,7 @@ public class Color {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String nombre;
 
     @ManyToMany(mappedBy = "colores")

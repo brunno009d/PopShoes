@@ -47,6 +47,7 @@ public class UsuarioService {
             usuarioEx.setTelefono(usuario.getTelefono());
             usuarioEx.setRol(usuario.getRol());
             usuarioEx.setEstilo(usuario.getEstilo());
+            usuarioEx.setCalzados(usuario.getCalzados());
 
             return usuarioRepository.save(usuarioEx);
         } else {
@@ -84,6 +85,9 @@ public class UsuarioService {
             if(usuario.getEstilo() != null){
                 usuarioEx.setEstilo(usuario.getEstilo());          
             }
+            if(usuario.getCalzados() != null){
+                usuarioEx.setCalzados(usuario.getCalzados());
+            }
 
             return usuarioRepository.save(usuarioEx);
             }else{
@@ -92,7 +96,7 @@ public class UsuarioService {
     }
 
      public List<Map<String, Object>> obtenerUsuarioConNombres() {
-        List<Object[]> resultados = usuarioRepository.findUsuarioConEstiloYRol();
+        List<Object[]> resultados = usuarioRepository.findUsuarioConEstiloRolYCalzados();
         List<Map<String, Object>> lista = new ArrayList<>();
 
         for (Object[] fila : resultados) {
@@ -106,6 +110,7 @@ public class UsuarioService {
             datos.put("telefono", fila[6]);
             datos.put("estilo", fila[7]);
             datos.put("rol", fila[8]);
+            datos.put("calzados", fila[9]);
             lista.add(datos);
         }
 

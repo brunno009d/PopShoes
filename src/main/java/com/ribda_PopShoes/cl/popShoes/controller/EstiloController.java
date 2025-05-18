@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,8 +32,8 @@ public class EstiloController {
         return ResponseEntity.ok(estilos);
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<Estilo> buscarEstiloPorId(Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<Estilo> buscarEstiloPorId(@PathVariable Long id){
         Estilo estilo = estiloService.obtenerEstiloPorId(id);
         if(estilo == null){
             return ResponseEntity.notFound().build();
@@ -46,8 +47,8 @@ public class EstiloController {
         return ResponseEntity.status(201).body(nuevoEstilo);
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<Estilo> actualizar(Long id, @RequestBody Estilo estilo){
+    @PutMapping("/{id}")
+    public ResponseEntity<Estilo> actualizar(@PathVariable Long id, @RequestBody Estilo estilo){
         Estilo actEstilo = estiloService.actualizarEstilo(id, estilo);
         if (actEstilo == null){
             return ResponseEntity.notFound().build();
@@ -55,17 +56,17 @@ public class EstiloController {
         return ResponseEntity.ok(actEstilo);
     }
 
-    @PatchMapping("/id")
-    public ResponseEntity<Estilo> editar(Long id, @RequestBody Estilo estilo){
-        Estilo actEstilo = estiloService.actualizarEstilo(id, estilo);
+    @PatchMapping("/{id}")
+    public ResponseEntity<Estilo> editar(@PathVariable Long id, @RequestBody Estilo estilo){
+        Estilo actEstilo = estiloService.actualizarEstiloParcial(id, estilo);
         if (actEstilo == null){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(actEstilo);
     }
     
-    @DeleteMapping("/id")
-    public ResponseEntity<Void> eliminar(Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id){
         estiloService.ElminarEstilo(id);
         return ResponseEntity.noContent().build();
     }

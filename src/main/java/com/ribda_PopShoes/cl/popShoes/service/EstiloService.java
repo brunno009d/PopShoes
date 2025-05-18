@@ -84,6 +84,4 @@ public class EstiloService {
     public List<Estilo> obtenerEstiloPorColorId(Long colorId) {
         return estiloRepository.findByColores_Id(colorId);
     }
-
-
 }

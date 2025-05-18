@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public class InfluencerController {
     }
 
     @GetMapping("/id")
-    public ResponseEntity<Influencer> buscarInfluencerPorId(Long id){
+    public ResponseEntity<Influencer> buscarInfluencerPorId(@PathVariable Long id){
         Influencer influencer = influencerService.obtenerInfluencerPorId(id);
         if (influencer == null){
             return ResponseEntity.noContent().build();
@@ -46,8 +47,8 @@ public class InfluencerController {
         return ResponseEntity.status(201).body(nuevoInfluencer);
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<Influencer> actualizar(Long id, @RequestBody Influencer influencer){
+    @PutMapping("/{id}")
+    public ResponseEntity<Influencer> actualizar(@PathVariable Long id, @RequestBody Influencer influencer){
         Influencer actInfluencer = influencerService.actualizarInfluencer(id, influencer);
         if (actInfluencer == null){
             return ResponseEntity.notFound().build();
@@ -55,8 +56,8 @@ public class InfluencerController {
         return ResponseEntity.ok(actInfluencer);
     }
 
-    @PatchMapping("/id")
-    public ResponseEntity<Influencer> editar(Long id, @RequestBody Influencer influencer){
+    @PatchMapping("/{id}")
+    public ResponseEntity<Influencer> editar(@PathVariable Long id, @RequestBody Influencer influencer){
         Influencer actInfluencer = influencerService.actualizarInfluencerParcial(id, influencer);
         if (actInfluencer == null){
             return ResponseEntity.notFound().build();
@@ -64,8 +65,8 @@ public class InfluencerController {
         return ResponseEntity.ok(actInfluencer);
     }
 
-    @DeleteMapping("/id")
-    public ResponseEntity<Void> eliminar(Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id){
         influencerService.eliminarInfluencer(id);
         return ResponseEntity.noContent().build();
     }

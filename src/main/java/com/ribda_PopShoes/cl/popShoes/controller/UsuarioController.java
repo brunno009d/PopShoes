@@ -1,12 +1,14 @@
 package com.ribda_PopShoes.cl.popShoes.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,13 +33,22 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarios);
     }
 
-    @GetMapping("/id")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Long id){
         Usuario usuario = usuarioService.obtenerUsuarioPorId(id);
         if (usuario == null){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(usuario);
+    }
+
+    @GetMapping("/resumen")
+    public ResponseEntity<List<Map<String, Object>>> resumen(){
+        List<Map<String, Object>> resumen = usuarioService.obtenerUsuarioConNombres();
+        if (resumen.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resumen);
     }
 
     @PostMapping
@@ -46,8 +57,8 @@ public class UsuarioController {
         return ResponseEntity.status(201).body(nuevoUsuario);
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<Usuario> actualizar(Long id, @RequestBody Usuario usuario){
+    @PutMapping("/{id}")
+    public ResponseEntity<Usuario> actualizar(@PathVariable Long id, @RequestBody Usuario usuario){
         Usuario actulizarUsuario = usuarioService.actualizUsuario(id, usuario);
         if (actulizarUsuario == null){
             return ResponseEntity.notFound().build();
@@ -55,17 +66,17 @@ public class UsuarioController {
         return ResponseEntity.ok(actulizarUsuario);
     }
 
-    @PatchMapping("/id")
-    public ResponseEntity<Usuario> editar(Long id, @RequestBody Usuario usuario){
-        Usuario actualizarUsuario = usuarioService.actualizUsuario(id, usuario);
+    @PatchMapping("/{id}")
+    public ResponseEntity<Usuario> editar(@PathVariable Long id, @RequestBody Usuario usuario){
+        Usuario actualizarUsuario = usuarioService.actualizarUsuarioParcial(id, usuario);
         if(actualizarUsuario == null){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(actualizarUsuario);
     }
 
-    @DeleteMapping("/id")
-    public ResponseEntity<Void> eliminar(Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id){
         usuarioService.eliminarUsuario(id);
         return ResponseEntity.noContent().build();
     }

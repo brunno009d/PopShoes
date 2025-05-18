@@ -28,7 +28,10 @@ public class Usuario {
     @Column(nullable = false)
     private String apaterno;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
+    private String amaterno;
+
+    @Column(unique = true, length = 20, nullable = false)
     private String usuario;
 
     @Column(nullable = false)
@@ -37,7 +40,7 @@ public class Usuario {
     @Column(nullable = false)
     private String direccion;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 9)
     private Integer telefono;
 
     @ManyToOne

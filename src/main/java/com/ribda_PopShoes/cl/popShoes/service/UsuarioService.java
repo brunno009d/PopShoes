@@ -40,6 +40,7 @@ public class UsuarioService {
         if (usuarioEx != null){
             usuarioEx.setNombre(usuario.getNombre());
             usuarioEx.setApaterno(usuario.getApaterno());
+            usuarioEx.setAmaterno(usuario.getAmaterno());
             usuarioEx.setUsuario(usuario.getUsuario());
             usuarioEx.setContraseña(usuario.getContraseña());
             usuarioEx.setDireccion(usuario.getDireccion());
@@ -54,13 +55,16 @@ public class UsuarioService {
     } 
 
     public Usuario actualizarUsuarioParcial(Long id, Usuario usuario){
-        Usuario usuarioEx = usuarioRepository.findById(id).orElse(usuario);
+        Usuario usuarioEx = usuarioRepository.findById(id).orElse(null);
         if (usuarioEx != null) {
             if(usuario.getNombre() != null){
                 usuarioEx.setNombre(usuario.getNombre());
             }
             if(usuario.getApaterno() != null){
                 usuarioEx.setApaterno(usuario.getApaterno());
+            }
+            if(usuario.getAmaterno() != null){
+                usuarioEx.setAmaterno(usuario.getAmaterno());
             }
             if(usuario.getUsuario() != null){
                 usuarioEx.setUsuario(usuario.getUsuario());            
@@ -93,9 +97,15 @@ public class UsuarioService {
 
         for (Object[] fila : resultados) {
             Map<String, Object> datos = new HashMap<>();
-            datos.put("usuario", fila[0]);
-            datos.put("estilo", fila[1]);
-            datos.put("rol", fila[2]);
+            datos.put("id", fila[0]);
+            datos.put("usuario", fila[1]);
+            datos.put("nombre", fila[2]);
+            datos.put("apaterno", fila[3]);
+            datos.put("amaterno", fila[4]);
+            datos.put("direccion", fila[5]);
+            datos.put("telefono", fila[6]);
+            datos.put("estilo", fila[7]);
+            datos.put("rol", fila[8]);
             lista.add(datos);
         }
 

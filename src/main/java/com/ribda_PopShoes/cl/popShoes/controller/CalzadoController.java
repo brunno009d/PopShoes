@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,8 +32,8 @@ public class CalzadoController {
         return ResponseEntity.ok(calzados);
     }
 
-    @GetMapping("/id")
-    public ResponseEntity <Calzado> buscarCalzadoPorId(Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity <Calzado> buscarCalzadoPorId(@PathVariable Long id){
         Calzado calzado = calzadoService.obtenerCalzadoPorId(id);
         if(calzado == null){
             return ResponseEntity.notFound().build();
@@ -49,8 +50,8 @@ public class CalzadoController {
         return ResponseEntity.ok(nuevoCalzado);
     }
 
-    @PutMapping("/id")
-    public ResponseEntity<Calzado> actualizar(Long id, @RequestBody Calzado calzado){
+    @PutMapping("/{id}")
+    public ResponseEntity<Calzado> actualizar(@PathVariable Long id, @RequestBody Calzado calzado){
         Calzado actCalzado = calzadoService.actualizarCalzado(id, calzado);
         if (actCalzado == null){
             return ResponseEntity.notFound().build();
@@ -58,17 +59,17 @@ public class CalzadoController {
         return ResponseEntity.ok(actCalzado);
     }
 
-    @PatchMapping("/id")
-    public ResponseEntity<Calzado> editar(Long id, @RequestBody Calzado calzado){
-        Calzado actCalzado = calzadoService.actualizarCalzado(id, calzado);
+    @PatchMapping("/{id}")
+    public ResponseEntity<Calzado> editar(@PathVariable Long id, @RequestBody Calzado calzado){
+        Calzado actCalzado = calzadoService.actualizarCalzadoParcial(id, calzado);
         if (actCalzado == null){
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(actCalzado);
     }
 
-    @DeleteMapping("/id")
-    public ResponseEntity<Void> eliminar(Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id){
         calzadoService.elminarCalzado(id);
         return ResponseEntity.notFound().build();
     }

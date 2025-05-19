@@ -41,6 +41,24 @@ public class EstiloController {
         return ResponseEntity.ok(estilo);
     }
 
+    @GetMapping("/influencer/{influencerId}")
+    public ResponseEntity<List<Estilo>> buscarEstiloPorInfluencer(@PathVariable Long influencerId){
+        List<Estilo> estilos = estiloService.obtenerEstilosPorInfluencerId(influencerId);
+        if (estilos.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(estilos);
+    }
+
+    @GetMapping("/color/{colorId}")
+    public ResponseEntity<List<Estilo>> buscarEstiloPorColor(@PathVariable Long colorId){
+        List<Estilo> estilos = estiloService.obtenerEstilosPorColorId(colorId);
+        if (estilos.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(estilos);
+    }
+
     @PostMapping
     public ResponseEntity<Estilo> guardar(@RequestBody Estilo estilo){
         Estilo nuevoEstilo = estiloService.guardarEstilo(estilo);

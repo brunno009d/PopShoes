@@ -12,11 +12,8 @@ import com.ribda_PopShoes.cl.popShoes.model.Calzado;
 public interface CalzadoRepository extends JpaRepository<Calzado ,Long> {
 
     @Query("""
-            SELECT c, c.estilo.nombre, c.categoria.nombre, c.marca.nombre FROM Calzado c
+            SELECT c, c.estilo.nombre, c.categoria.nombre, c.marca.nombre FROM Calzado c 
             """)
     List<Object[]> findCalzadoConMarcaYEstiloYCategoria();
 
-    List<Calzado> findByMarcaId(Long marcaId);
-    List<Calzado> findByCategoriaId(Long categoriaId);
-    List<Calzado> findByEstiloId(Long estiloId);
 }

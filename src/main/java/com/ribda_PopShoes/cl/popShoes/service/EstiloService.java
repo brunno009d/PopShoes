@@ -63,25 +63,12 @@ public class EstiloService {
         }else{return null;}
     }
 
-    public List<Map<String, Object>> obtenerEstiloConNombres() {
-        List<Object[]> resultados = estiloRepository.findEstiloConInfluencerYColor();
-        List<Map<String, Object>> lista = new ArrayList<>();
-
-        for (Object[] fila : resultados) {
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("estilo", fila[0]);
-            datos.put("influencer", fila[1]);
-            datos.put("color", fila[2]);
-            lista.add(datos);
-        }
-
-        return lista;
-    }
-
-    public List<Estilo> obtenerEstiloPorInfluencerId(Long influencerId) {
+    public List<Estilo> obtenerEstilosPorInfluencerId(long influencerId){
         return estiloRepository.findByInfluencers_Id(influencerId);
+
     }
-    public List<Estilo> obtenerEstiloPorColorId(Long colorId) {
+
+    public List<Estilo> obtenerEstilosPorColorId(long colorId){
         return estiloRepository.findByColores_Id(colorId);
     }
 }

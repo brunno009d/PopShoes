@@ -117,20 +117,5 @@ public class UsuarioService {
         return lista;
     }
 
-    public List<Usuario> obtenerUsuariosPorEstiloId(Long estiloId) {
-        return usuarioRepository.findByEstiloId(estiloId);
-    }
-    public List<Usuario> obtenerUsuarioPorRolId(Long rolId) {
-        return usuarioRepository.findByRolId(rolId);
-    }
-    public List<Usuario> obtenerUsuariosPorEstiloIdYRolId(Long estiloId, Long rolId) {
-        return usuarioRepository.findByEstiloId(estiloId).stream()
-                .filter(usuario -> usuario.getRol().getId().equals(rolId))
-                .collect(Collectors.toList());
-    }
-    public List<Usuario> obtenerUsuariosPorRolIdYEstiloId(Long rolId, Long estiloId) {
-        return usuarioRepository.findByRolId(rolId).stream()
-                .filter(usuario -> usuario.getEstilo().getId().equals(estiloId))
-                .collect(Collectors.toList());
-    }
+
 }

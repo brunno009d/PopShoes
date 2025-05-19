@@ -1,6 +1,9 @@
 package com.ribda_PopShoes.cl.popShoes.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,6 +64,22 @@ public class CalzadoService {
             }
             return calzadoRepository.save(calzadoEx);
         }else{return null;}
+    }
+
+    public List<Map<String, Object>> obtenerCalzadosConNombres(){
+        List<Object[]> resultados = calzadoRepository.findCalzadoConMarcaYEstiloYCategoria();
+        List<Map<String, Object>> lista = new ArrayList<>();
+
+        for (Object[] fila : resultados) {
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("calzado", fila[0]);
+            datos.put("nombreMarca", fila[1]);
+            datos.put("nombreCategoria", fila[2]);
+            datos.put("nombreEstilo", fila[3]);
+            lista.add(datos);
+
+        }
+        return lista;
     }
 
 }

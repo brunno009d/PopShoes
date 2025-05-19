@@ -10,10 +10,5 @@ import com.ribda_PopShoes.cl.popShoes.model.Influencer;
 
 @Repository
 public interface InfluencerRepository extends JpaRepository<Influencer, Long> {
-    @Query("""
-            SELECT i, e.nombre FROM Influencer i JOIN i.estilos e
-            """)
-    List<Object[]> findInfluencerConEstilo();
 
-    List<Influencer> findByEstilos_Id(Long estiloId);
 }

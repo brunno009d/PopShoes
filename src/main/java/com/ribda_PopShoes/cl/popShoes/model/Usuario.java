@@ -62,15 +62,5 @@ public class Usuario {
         inverseJoinColumns = @JoinColumn(name = "FK_CALZADOS", nullable = false)
     )
     private List<Calzado> calzados;
-    /*
-    @ManyToMany
-    @JoinTable(
-        name = "estilo_influencers",
-        joinColumns = @JoinColumn(name = "FK_ESTILO", nullable = false),
-        inverseJoinColumns = @JoinColumn(name = "FK_INFLUENCERS", nullable = false)
-    )
-    private List<Influencer> influencers;
-     
-     */
 
 }

@@ -1,6 +1,7 @@
 package com.ribda_PopShoes.cl.popShoes.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,15 @@ public class CalzadoController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(calzado);
+    }
+
+    @GetMapping("/resumen")
+    public ResponseEntity<List<Map<String, Object>>> resumen(){
+        List<Map<String, Object>> resumen = calzadoService.obtenerCalzadosConNombres();
+        if (resumen.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resumen);
     }
 
     @PostMapping

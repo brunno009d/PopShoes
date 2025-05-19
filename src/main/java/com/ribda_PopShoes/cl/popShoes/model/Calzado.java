@@ -48,9 +48,4 @@ public class Calzado {
     @ManyToMany(mappedBy = "calzados")
     @JsonIgnore
     private List<Usuario> usuarios;
-    /*
-    @ManyToMany(mappedBy = "influencers")
-    @JsonIgnore
-    private List<Estilo> estilos;
-     */
 }

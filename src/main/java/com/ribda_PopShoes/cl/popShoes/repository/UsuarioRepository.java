@@ -16,9 +16,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
             FROM Usuario u JOIN u.calzados c
             """)
     List<Object[]> findUsuarioConEstiloRolYCalzados();
-    
-    List<Usuario> findByCalzados_id(Long calzadosId);
-    List<Usuario> findByEstiloId(Long estiloId);
-    List<Usuario> findByRolId(Long rolId);
+
 
 }

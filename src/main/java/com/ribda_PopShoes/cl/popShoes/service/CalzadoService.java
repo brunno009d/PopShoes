@@ -44,26 +44,27 @@ public class CalzadoService {
         }else{return null;}
     }
 
-    public Calzado actualizarCalzadoParcial(Long id, Calzado calzado){
-        Calzado calzadoEx = calzadoRepository.findById(id).orElse(null);
-        if(calzadoEx != null){
-            if(calzadoEx.getNombre() != null){
-                calzadoEx.setNombre(calzado.getNombre());
-            }
-            if(calzadoEx.getTalla() != null){
-                calzadoEx.setTalla(calzado.getTalla());
-            }
-            if(calzadoEx.getEstilo() != null){
-                calzadoEx.setEstilo(calzado.getEstilo());
-            }
-            if(calzadoEx.getCategoria() != null){
-                calzadoEx.setCategoria(calzado.getCategoria());
-            }
-            if(calzadoEx.getMarca() != null){
-                calzadoEx.setMarca(calzado.getMarca());
-            }
-            return calzadoRepository.save(calzadoEx);
-        }else{return null;}
+    public Calzado actualizarCalzadoParcial(Long id, Calzado calzado) {
+    Calzado calzadoEx = calzadoRepository.findById(id).orElse(null);
+    if (calzadoEx != null) {
+        if (calzado.getNombre() != null) {
+            calzadoEx.setNombre(calzado.getNombre());
+        }
+        if (calzado.getTalla() != null) {
+            calzadoEx.setTalla(calzado.getTalla());
+        }
+        if (calzado.getEstilo() != null) {
+            calzadoEx.setEstilo(calzado.getEstilo());
+        }
+        if (calzado.getCategoria() != null) {
+            calzadoEx.setCategoria(calzado.getCategoria());
+        }
+        if (calzado.getMarca() != null) {
+            calzadoEx.setMarca(calzado.getMarca());
+        }
+        return calzadoRepository.save(calzadoEx);
+        } else {
+        return null;}
     }
 
     public List<Map<String, Object>> obtenerCalzadosConNombres(){

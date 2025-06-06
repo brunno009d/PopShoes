@@ -11,9 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ribda_PopShoes.cl.popShoes.repository.UsuarioRepository;
+
+import jakarta.transaction.Transactional;
+
 import com.ribda_PopShoes.cl.popShoes.model.Usuario;;;
 
 @Service
+@Transactional
 public class UsuarioService {
 
     @Autowired

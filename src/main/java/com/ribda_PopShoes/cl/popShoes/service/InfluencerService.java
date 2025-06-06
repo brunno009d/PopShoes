@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import com.ribda_PopShoes.cl.popShoes.model.Influencer;
 import com.ribda_PopShoes.cl.popShoes.repository.InfluencerRepository;
 
+import jakarta.transaction.Transactional;
+
 
 @Service
+@Transactional
 public class InfluencerService {
     @Autowired
     private InfluencerRepository influencerRepository;
@@ -43,13 +46,13 @@ public class InfluencerService {
     public Influencer actualizarInfluencerParcial(Long id, Influencer influencer){
         Influencer influencerEx = influencerRepository.findById(id).orElse(null);
         if(influencerEx != null){
-            if(influencerEx.getNombre() != null){
+            if(influencer.getNombre() != null){
                 influencerEx.setNombre(influencer.getNombre());
             }
-            if(influencerEx.getDescripcion() != null){
+            if(influencer.getDescripcion() != null){
                 influencerEx.setDescripcion(influencer.getDescripcion());
             }
-            if(influencerEx.getEstilos() != null){
+            if(influencer.getEstilos() != null){
                 influencerEx.setEstilos(influencer.getEstilos());
             }
             return influencerRepository.save(influencerEx);

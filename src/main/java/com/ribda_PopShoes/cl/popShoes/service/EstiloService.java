@@ -12,7 +12,10 @@ import org.springframework.stereotype.Service;
 import com.ribda_PopShoes.cl.popShoes.model.Estilo;
 import com.ribda_PopShoes.cl.popShoes.repository.EstiloRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class EstiloService {
     @Autowired
     private EstiloRepository estiloRepository;
@@ -47,16 +50,16 @@ public class EstiloService {
     public Estilo actualizarEstiloParcial(Long id, Estilo estilo){
         Estilo estiloEx = estiloRepository.findById(id).orElse(null);
         if(estiloEx != null){
-            if(estiloEx.getNombre() != null){
+            if(estilo.getNombre() != null){
                 estiloEx.setNombre(estilo.getNombre());
             }
-            if(estiloEx.getDescripcion() != null){
+            if(estilo.getDescripcion() != null){
                 estiloEx.setDescripcion(estilo.getDescripcion());
             }
-            if(estiloEx.getInfluencers() != null){
+            if(estilo.getInfluencers() != null){
                 estiloEx.setInfluencers(estilo.getInfluencers());
             }
-            if(estiloEx.getColores() != null){
+            if(estilo.getColores() != null){
                 estiloEx.setColores(estilo.getColores());
             }
             return estiloRepository.save(estiloEx);

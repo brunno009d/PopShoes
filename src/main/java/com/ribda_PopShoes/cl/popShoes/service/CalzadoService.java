@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 import com.ribda_PopShoes.cl.popShoes.model.Calzado;
 import com.ribda_PopShoes.cl.popShoes.repository.CalzadoRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class CalzadoService {
     @Autowired
     private CalzadoRepository calzadoRepository;

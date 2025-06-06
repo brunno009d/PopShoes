@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import com.ribda_PopShoes.cl.popShoes.model.Color;
 import com.ribda_PopShoes.cl.popShoes.repository.ColorRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class ColorService {
     @Autowired
     private ColorRepository colorRepository;

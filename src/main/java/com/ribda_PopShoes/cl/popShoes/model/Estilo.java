@@ -28,7 +28,7 @@ public class Estilo {
     @Column(nullable = false, length = 20)
     private String nombre;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String descripcion;
 
     @ManyToMany

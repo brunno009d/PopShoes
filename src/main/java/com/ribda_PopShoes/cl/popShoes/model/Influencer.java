@@ -30,7 +30,7 @@ public class Influencer {
     @Column(nullable = false, length = 20)
     private String nombre;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 100)
     private String descripcion;
 
     @ManyToMany(mappedBy = "influencers")

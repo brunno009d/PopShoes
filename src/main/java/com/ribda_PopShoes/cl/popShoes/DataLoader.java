@@ -84,43 +84,21 @@ public class DataLoader implements CommandLineRunner{
             influencerRepository.save(influencer);
         }
 
-        for(int i = 0; i < 3; i++){
-            Estilo estilo = new Estilo();
-            estilo.setId(i + 1);
-            estilo.setNombre(faker.options().option("Casual", "Informal", "Deportivo"));
-            estilo.setDescripcion(faker.lorem().sentence());
-            estiloRepository.save(estilo);
-        }
-
         // para estilos color y estilos influencer
 
 
         List<Color> colores = colorRepository.findAll();
         List<Influencer> influencers = influencerRepository.findAll();
-        List<Estilo> estilos = estiloRepository.findAll();
 
         for(int i = 0; i < 3; i++){
             Estilo estilo = new Estilo();
-            estilo.setColores(colores);
-            estilo.setInfluencers(influencers);
+            estilo.setId(i + 1);
+            estilo.setNombre(faker.options().option("Casual", "Informal", "Deportivo", "Formal", "Urbano"));
+            estilo.setDescripcion(faker.lorem().sentence());
+            estilo.setColores(getRandomSubset(colores, 2));
+            estilo.setInfluencers(getRandomSubset(influencers, 2));
             estiloRepository.save(estilo);
         }
-
-        for(int i = 0; i < 3; i++){
-            Influencer influencer = new Influencer();
-            influencer.setEstilos(estilos);
-        }
-
-        for(int i = 0; i < 3; i++){
-            Color color = new Color();
-            color.setEstilos(estilos);
-        }
-
-
-
-
-
-
 
         for(int i = 0; i < 3; i++){
             Categoria categoria = new Categoria();
@@ -138,9 +116,25 @@ public class DataLoader implements CommandLineRunner{
 
         List<Categoria> categorias = categoriaRepository.findAll();
         List<Marca> marcas = marcaRepository.findAll();
+        List<Estilo> estilos = estiloRepository.findAll();
+
         // calzado
+        for(int i = 0; i < 3; i++){
+        Calzado calzado = new Calzado();
+        calzado.setId(i + 1);
+        calzado.setNombre(faker.options().option("Air Force 1", "Seude XL", "Jordan", "Campus"));
+        calzado.setTalla(faker.number().numberBetween(36, 45));
+        calzado.setEstilo(estilos.get(random.nextInt(estilos.size())));
+        calzado.setCategoria(categorias.get(random.nextInt(categorias.size())));
+        calzado.setMarca(marcas.get(random.nextInt(marcas.size())));
+        calzadoRepository.save(calzado);
+        }
 
         //usuario
+        List<Rol> roles = rolRepository.findAll();
+        List<Calzado> calzados = calzadoRepository.findAll();
+
+
         for (int i = 0; i < 3; i ++){
             Usuario usuario = new Usuario();
             usuario.setId(i + 1);
@@ -151,32 +145,10 @@ public class DataLoader implements CommandLineRunner{
             usuario.setContraseña(faker.internet().password());
             usuario.setDireccion(faker.address().fullAddress());
             usuario.setTelefono(faker.number().numberBetween(100000000, 999999999));
+            usuario.setRol(roles.get(random.nextInt(roles.size())));
             usuario.setEstilo(estilos.get(random.nextInt(estilos.size())));
+            usuario.setCalzados(getRandomSubset(calzados, 2));
             usuarioRepository.save(usuario);
-        }
-
-        for(int i = 0; i < 3; i++){
-            Calzado calzado = new Calzado();
-            calzado.setId(i + 1);
-            calzado.setNombre(faker.commerce().productName());
-            calzado.setTalla(faker.number().numberBetween(36, 45));
-            calzado.setEstilo(estilos.get(random.nextInt(estilos.size())));
-            calzado.setCategoria(categorias.get(random.nextInt(categorias.size())));
-            calzado.setMarca(marcas.get(random.nextInt(marcas.size())));
-            calzadoRepository.save(calzado);
-        }
-
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        List<Calzado> calzados = calzadoRepository.findAll();
-
-        for(int i = 0; i < 3; i++){
-            Usuario usuario = new Usuario();
-            usuario.setCalzados(calzados);
-        }
-
-        for(int i = 0; i < 3; i++){
-            Calzado calzado = new Calzado();
-            calzado.setUsuarios(usuarios);
         }
     }
 

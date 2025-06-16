@@ -26,25 +26,25 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
     private String nombre;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
     private String apaterno;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 100)
     private String amaterno;
 
-    @Column(unique = true, length = 20, nullable = false)
+    @Column(unique = true, length = 100, nullable = false)
     private String usuario;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 50)
     private String contraseña;
 
-    @Column(nullable = false, length = 30)
+    @Column(nullable = false, length = 100)
     private String direccion;
 
-    @Column(nullable = false, length = 9)
+    @Column(nullable = false, length = 15)
     private Integer telefono;
 
     @ManyToOne

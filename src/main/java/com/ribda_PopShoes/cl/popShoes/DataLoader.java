@@ -10,12 +10,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import com.ribda_PopShoes.cl.popShoes.model.Calzado;
 import com.ribda_PopShoes.cl.popShoes.model.Categoria;
 import com.ribda_PopShoes.cl.popShoes.model.Color;
 import com.ribda_PopShoes.cl.popShoes.model.Estilo;
 import com.ribda_PopShoes.cl.popShoes.model.Influencer;
 import com.ribda_PopShoes.cl.popShoes.model.Marca;
 import com.ribda_PopShoes.cl.popShoes.model.Rol;
+import com.ribda_PopShoes.cl.popShoes.model.Usuario;
 import com.ribda_PopShoes.cl.popShoes.repository.CalzadoRepository;
 import com.ribda_PopShoes.cl.popShoes.repository.CategoriaRepository;
 import com.ribda_PopShoes.cl.popShoes.repository.ColorRepository;
@@ -51,17 +53,19 @@ public class DataLoader implements CommandLineRunner{
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    @Autowired
     private MarcaRepository marcaRepository;
+
+    Faker faker = new Faker();
+    Random random = new Random();
 
     @Override
     public void run(String... args)throws Exception{
-        Faker faker = new Faker();
-        Random random = new Random();
-        
+       
         for(int i = 0; i < 3; i++){
             Rol rol = new Rol();
             rol.setId(i + 1);
-            rol.setNombre(faker.name().firstName());
+            rol.setNombre(faker.job().position());
             rolRepository.save(rol);
         }
 
@@ -88,16 +92,34 @@ public class DataLoader implements CommandLineRunner{
             estiloRepository.save(estilo);
         }
 
+        // para estilos color y estilos influencer
+
+
         List<Color> colores = colorRepository.findAll();
         List<Influencer> influencers = influencerRepository.findAll();
         List<Estilo> estilos = estiloRepository.findAll();
 
-        for(Estilo estilo : estilos){
+        for(int i = 0; i < 3; i++){
+            Estilo estilo = new Estilo();
+            estilo.setColores(colores);
+            estilo.setInfluencers(influencers);
+            estiloRepository.save(estilo);
+        }
 
+        for(int i = 0; i < 3; i++){
+            Influencer influencer = new Influencer();
+            influencer.setEstilos(estilos);
+        }
+
+        for(int i = 0; i < 3; i++){
+            Color color = new Color();
+            color.setEstilos(estilos);
         }
 
 
-        // para estilos color y estilos influencer
+
+
+
 
 
         for(int i = 0; i < 3; i++){
@@ -114,13 +136,57 @@ public class DataLoader implements CommandLineRunner{
             marcaRepository.save(marca);
         }  
 
+        List<Categoria> categorias = categoriaRepository.findAll();
+        List<Marca> marcas = marcaRepository.findAll();
         // calzado
 
         //usuario
-        for (int i = 0; i < 3; i ++);
+        for (int i = 0; i < 3; i ++){
+            Usuario usuario = new Usuario();
+            usuario.setId(i + 1);
+            usuario.setNombre(faker.name().firstName());
+            usuario.setApaterno(faker.name().lastName());
+            usuario.setAmaterno(faker.name().lastName());
+            usuario.setUsuario(faker.internet().username());
+            usuario.setContraseña(faker.internet().password());
+            usuario.setDireccion(faker.address().fullAddress());
+            usuario.setTelefono(faker.number().numberBetween(100000000, 999999999));
+            usuario.setEstilo(estilos.get(random.nextInt(estilos.size())));
+            usuarioRepository.save(usuario);
+        }
 
+        for(int i = 0; i < 3; i++){
+            Calzado calzado = new Calzado();
+            calzado.setId(i + 1);
+            calzado.setNombre(faker.commerce().productName());
+            calzado.setTalla(faker.number().numberBetween(36, 45));
+            calzado.setEstilo(estilos.get(random.nextInt(estilos.size())));
+            calzado.setCategoria(categorias.get(random.nextInt(categorias.size())));
+            calzado.setMarca(marcas.get(random.nextInt(marcas.size())));
+            calzadoRepository.save(calzado);
+        }
 
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        List<Calzado> calzados = calzadoRepository.findAll();
 
+        for(int i = 0; i < 3; i++){
+            Usuario usuario = new Usuario();
+            usuario.setCalzados(calzados);
+        }
+
+        for(int i = 0; i < 3; i++){
+            Calzado calzado = new Calzado();
+            calzado.setUsuarios(usuarios);
+        }
+    }
+
+    // Utilidad para obtener subconjuntos aleatorios
+    private <T> List<T> getRandomSubset(List<T> lista, int cantidad) {
+        Set<T> resultado = new HashSet<>();
+        while (resultado.size() < cantidad && resultado.size() < lista.size()) {
+            resultado.add(lista.get(random.nextInt(lista.size())));
+        }
+        return List.copyOf(resultado);
     }
 
 

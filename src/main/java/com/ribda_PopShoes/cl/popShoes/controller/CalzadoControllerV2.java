@@ -2,8 +2,12 @@ package com.ribda_PopShoes.cl.popShoes.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ribda_PopShoes.cl.popShoes.assemblers.CalzadoModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Calzado;
 import com.ribda_PopShoes.cl.popShoes.service.CalzadoService;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 
 @RestController
 @RequestMapping("api/v2/calzados")
@@ -24,22 +32,31 @@ public class CalzadoControllerV2 {
     @Autowired
     private CalzadoService calzadoService;
 
-    @GetMapping
-    public ResponseEntity<List<Calzado>> listar(){
-        List<Calzado> calzados = calzadoService.obtenerCalzados();
+    @Autowired
+    private CalzadoModelAssembler assembler;
+
+    @GetMapping(produces =  MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<CollectionModel<EntityModel<Calzado>>> listar(){
+        List<EntityModel<Calzado>> calzados = calzadoService.obtenerCalzados().stream()
+            .map(assembler::toModel)
+            .collect(Collectors.toList());
+
         if (calzados.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(calzados);
+        return ResponseEntity.ok(CollectionModel.of(
+            calzados,
+            linkTo(methodOn(CalzadoControllerV2.class).listar()).withSelfRel()
+        ));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity <Calzado> buscarCalzadoPorId(@PathVariable Long id){
+    @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<EntityModel<Calzado>> buscarCalzadoPorId(@PathVariable Long id){
         Calzado calzado = calzadoService.obtenerCalzadoPorId(id);
         if(calzado == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(calzado);
+        return ResponseEntity.ok(assembler.toModel(calzado));
     }
 
     @GetMapping("/resumen")
@@ -51,35 +68,42 @@ public class CalzadoControllerV2 {
         return ResponseEntity.ok(resumen);
     }
 
-    @PostMapping
-    public ResponseEntity<Calzado> guardar(@RequestBody Calzado calzado){
+
+    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<EntityModel<Calzado>> guardar(@RequestBody Calzado calzado){
         Calzado nuevoCalzado = calzadoService.guardarCalzado(calzado);
-        if (nuevoCalzado == null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(nuevoCalzado);
+
+        return ResponseEntity
+            .created(linkTo(methodOn(CalzadoControllerV2.class).buscarCalzadoPorId(Long.valueOf(nuevoCalzado.getId()))).toUri())
+            .body(assembler.toModel(nuevoCalzado));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Calzado> actualizar(@PathVariable Long id, @RequestBody Calzado calzado){
-        Calzado actCalzado = calzadoService.actualizarCalzado(id, calzado);
+    @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<EntityModel<Calzado>> actualizar(@PathVariable Long id, @RequestBody Calzado calzado){
+        calzado.setId(id.intValue());
+        Calzado actCalzado = calzadoService.guardarCalzado(calzado);
         if (actCalzado == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(actCalzado);
+        return ResponseEntity.ok(assembler.toModel(actCalzado));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Calzado> editar(@PathVariable Long id, @RequestBody Calzado calzado){
+    @PatchMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<EntityModel<Calzado>> editar(@PathVariable Long id, @RequestBody Calzado calzado){
         Calzado actCalzado = calzadoService.actualizarCalzadoParcial(id, calzado);
         if (actCalzado == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(actCalzado);
+        return ResponseEntity.ok(assembler.toModel(actCalzado));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
+        Calzado eCalzado = calzadoService.obtenerCalzadoPorId(id);
+        if (eCalzado == null){
+            return ResponseEntity.notFound().build();
+        }
+        
         calzadoService.elminarCalzado(id);
         return ResponseEntity.noContent().build();
     }

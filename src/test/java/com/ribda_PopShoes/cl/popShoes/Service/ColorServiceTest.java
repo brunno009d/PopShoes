@@ -1,5 +1,9 @@
 package com.ribda_PopShoes.cl.popShoes.Service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +35,14 @@ public class ColorServiceTest {
 
 
         return new Color(001, "Amarillo", estilos);
+    }
+
+    @Test
+    public void testFindAll(){
+        when(colorRepository.findAll()).thenReturn(List.of(crearColor()));
+        List<Color> colores = colorService.obtenerColores();
+        assertNotNull(colores);
+        assertEquals(1, colores.size());
     }
 
 

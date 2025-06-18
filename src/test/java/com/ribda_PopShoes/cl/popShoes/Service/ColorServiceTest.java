@@ -1,11 +1,11 @@
 package com.ribda_PopShoes.cl.popShoes.Service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +33,7 @@ public class ColorServiceTest {
         List<Estilo> estilos = new ArrayList<>();
         estilos.add(estilo);
 
-
-        return new Color(001, "Amarillo", estilos);
+        return new Color(1, "Amarillo", estilos);
     }
 
     @Test
@@ -45,5 +44,41 @@ public class ColorServiceTest {
         assertEquals(1, colores.size());
     }
 
+    @Test
+    public void testFindById(){
+        when(colorRepository.findById(1L)).thenReturn(Optional.of(crearColor()));
+        Color color = colorService.obtenerColorPorId(1L);
+        assertNotNull(color);
+        assertEquals("Amarillo", color.getNombre());
+    }
 
+    @Test
+    public void testSave(){
+        Color color = crearColor();
+        when(colorRepository.save(color)).thenReturn(color);
+        Color savedColor = colorService.guardarColor(color);
+        assertNotNull(savedColor);
+        assertEquals("Amarillo", savedColor.getNombre());
+    }
+
+    @Test
+    public void testPatchColor(){
+        Color existingColor = crearColor();
+        Color patchData = new Color();
+        patchData.setNombre("Verde");
+        
+        when(colorRepository.findById(1L)).thenReturn(Optional.of(existingColor));
+        when(colorRepository.save(any(Color.class))).thenReturn(existingColor);
+        
+        Color patchedColor = colorService.actualizarColor(1L, patchData);
+        assertNotNull(patchedColor);
+        assertEquals("Verde", patchedColor.getNombre());
+    }
+
+    @Test
+    public void testDeleteById(){
+        doNothing().when(colorRepository).deleteById(1L);
+        colorService.eliminarColor(1L);
+        verify(colorRepository, times(1)).deleteById(1L);
+    }
 }

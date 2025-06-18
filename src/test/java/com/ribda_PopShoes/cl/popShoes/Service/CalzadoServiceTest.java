@@ -41,7 +41,6 @@ public class CalzadoServiceTest {
         usuario.setDireccion("Av123");
         usuario.setTelefono(123456789);
         usuario.setRol(new Rol());
-        usuario.setEstilo(new Estilo());
         List<Usuario> usuarios = new ArrayList<>();
         usuarios.add(usuario);
 

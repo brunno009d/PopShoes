@@ -146,7 +146,6 @@ public class DataLoader implements CommandLineRunner{
             usuario.setDireccion(faker.address().fullAddress());
             usuario.setTelefono(faker.number().numberBetween(100000000, 999999999));
             usuario.setRol(roles.get(random.nextInt(roles.size())));
-            usuario.setEstilo(estilos.get(random.nextInt(estilos.size())));
             usuario.setCalzados(getRandomSubset(calzados, 2));
             usuarioRepository.save(usuario);
         }

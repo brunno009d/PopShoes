@@ -12,7 +12,7 @@ import com.ribda_PopShoes.cl.popShoes.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{    
     @Query("""
             SELECT u.id, u.usuario, u.nombre, u.apaterno, u.amaterno, u.direccion, u.telefono,
-            u.estilo.nombre, u.rol.nombre, c.nombre 
+            u.rol.nombre, c.nombre 
             FROM Usuario u JOIN u.calzados c
             """)
     List<Object[]> findUsuarioConEstiloRolYCalzados();

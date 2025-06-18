@@ -50,7 +50,6 @@ public class UsuarioService {
             usuarioEx.setDireccion(usuario.getDireccion());
             usuarioEx.setTelefono(usuario.getTelefono());
             usuarioEx.setRol(usuario.getRol());
-            usuarioEx.setEstilo(usuario.getEstilo());
             usuarioEx.setCalzados(usuario.getCalzados());
 
             return usuarioRepository.save(usuarioEx);
@@ -86,9 +85,6 @@ public class UsuarioService {
             if(usuario.getRol() != null){
                 usuarioEx.setRol(usuario.getRol());      
             }
-            if(usuario.getEstilo() != null){
-                usuarioEx.setEstilo(usuario.getEstilo());          
-            }
             if(usuario.getCalzados() != null){
                 usuarioEx.setCalzados(usuario.getCalzados());
             }
@@ -112,7 +108,6 @@ public class UsuarioService {
             datos.put("amaterno", fila[4]);
             datos.put("direccion", fila[5]);
             datos.put("telefono", fila[6]);
-            datos.put("estilo", fila[7]);
             datos.put("rol", fila[8]);
             datos.put("calzados", fila[9]);
             lista.add(datos);

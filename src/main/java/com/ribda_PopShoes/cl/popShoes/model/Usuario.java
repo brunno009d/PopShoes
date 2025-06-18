@@ -51,10 +51,6 @@ public class Usuario {
     @JoinColumn(name = "id_rol", nullable = false)
     private Rol rol;
 
-    @ManyToOne
-    @JoinColumn(name = "id_estilo", nullable = false)
-    private Estilo estilo;
-
     @ManyToMany
     @JoinTable(
         name = "usuario_calzados",

@@ -2,8 +2,12 @@ package com.ribda_PopShoes.cl.popShoes.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +19,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ribda_PopShoes.cl.popShoes.assemblers.UsuarioModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Usuario;
 import com.ribda_PopShoes.cl.popShoes.service.UsuarioService;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 
 @RestController
 @RequestMapping("/api/v2/usuarios")
@@ -24,22 +32,31 @@ public class UsuarioControllerV2 {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
-    public ResponseEntity<List<Usuario>> listar(){
-        List<Usuario> usuarios = usuarioService.obtenerUsuarios();
+    @Autowired
+    private UsuarioModelAssembler assembler;
+
+    @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<CollectionModel<EntityModel<Usuario>>> listar(){
+        List<EntityModel<Usuario>> usuarios = usuarioService.obtenerUsuarios().stream()
+        .map(assembler::toModel)
+        .collect(Collectors.toList());
+
         if (usuarios.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.ok(CollectionModel.of(
+            usuarios,
+            linkTo(methodOn(UsuarioControllerV2.class).listar()).withSelfRel()
+        ));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscarUsuarioPorId(@PathVariable Long id){
+    @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<EntityModel<Usuario>> buscarUsuarioPorId(@PathVariable Long id){
         Usuario usuario = usuarioService.obtenerUsuarioPorId(id);
         if (usuario == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(usuario);
+        return ResponseEntity.ok(assembler.toModel(usuario));
     }
 
     @GetMapping("/resumen")
@@ -51,32 +68,41 @@ public class UsuarioControllerV2 {
         return ResponseEntity.ok(resumen);
     }
 
-    @PostMapping
-    public ResponseEntity<Usuario> guardar(@RequestBody Usuario usuario){
+    @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<EntityModel<Usuario>> guardar(@RequestBody Usuario usuario){
         Usuario nuevoUsuario = usuarioService.guardarUsuario(usuario);
-        return ResponseEntity.status(201).body(nuevoUsuario);
+        
+        return ResponseEntity
+        .created(linkTo(methodOn(UsuarioControllerV2.class).buscarUsuarioPorId(Long.valueOf(nuevoUsuario.getId()))).toUri())
+        .body(assembler.toModel(nuevoUsuario));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Usuario> actualizar(@PathVariable Long id, @RequestBody Usuario usuario){
+    @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<EntityModel<Usuario>> actualizar(@PathVariable Long id, @RequestBody Usuario usuario){
+        usuario.setId(id.intValue());
         Usuario actulizarUsuario = usuarioService.actualizUsuario(id, usuario);
         if (actulizarUsuario == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(actulizarUsuario);
+        return ResponseEntity.ok(assembler.toModel(actulizarUsuario));
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<Usuario> editar(@PathVariable Long id, @RequestBody Usuario usuario){
+    @PatchMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public ResponseEntity<EntityModel<Usuario>> editar(@PathVariable Long id, @RequestBody Usuario usuario){
         Usuario actualizarUsuario = usuarioService.actualizarUsuarioParcial(id, usuario);
         if(actualizarUsuario == null){
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(actualizarUsuario);
+        return ResponseEntity.ok(assembler.toModel(actualizarUsuario));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
+        Usuario eUsuario = usuarioService.obtenerUsuarioPorId(id);
+        if(eUsuario == null){
+            return ResponseEntity.notFound().build();
+        }
+        
         usuarioService.eliminarUsuario(id);
         return ResponseEntity.noContent().build();
     }

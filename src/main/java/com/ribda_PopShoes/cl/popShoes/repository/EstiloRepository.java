@@ -13,4 +13,6 @@ public interface EstiloRepository extends JpaRepository<Estilo, Long>{
 
     List<Estilo> findByInfluencers_Id(Long influencerId);
     List<Estilo> findByColores_Id(Long colorId);
+
+    List<Estilo> findByInfluencersIdAndColoresId(Integer idInfluencer, Integer idColor);
 }

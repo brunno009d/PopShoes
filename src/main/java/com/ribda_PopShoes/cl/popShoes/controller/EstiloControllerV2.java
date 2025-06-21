@@ -76,6 +76,19 @@ public class EstiloControllerV2 {
         return ResponseEntity.ok(estilos);
     }
 
+    @GetMapping(value = "/influencer/{i_id}/color/{c_id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public CollectionModel<EntityModel<Estilo>> buscarEstiloPorInfluencerYColor(@PathVariable Integer i_id, @PathVariable Integer c_id){
+        List<EntityModel<Estilo>> estilos = estiloService.findByInfluencerIdAndColorId(i_id, c_id)
+        .stream()
+        .map(assembler::toModel)
+        .collect(Collectors.toList());
+
+        return CollectionModel.of(
+            estilos,
+            linkTo(methodOn(EstiloControllerV2.class).buscarEstiloPorInfluencerYColor(i_id, c_id)).withSelfRel()
+        );
+    }
+
     @PostMapping(produces =  MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<Estilo>> guardar(@RequestBody Estilo estilo){
         Estilo nuevoEstilo = estiloService.guardarEstilo(estilo);

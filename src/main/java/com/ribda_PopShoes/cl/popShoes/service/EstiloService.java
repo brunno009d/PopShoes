@@ -74,4 +74,8 @@ public class EstiloService {
     public List<Estilo> obtenerEstilosPorColorId(long colorId){
         return estiloRepository.findByColores_Id(colorId);
     }
+
+    public List<Estilo> findByInfluencerIdAndColorId(Integer idInfluencer, Integer idColor){
+        return estiloRepository.findByInfluencersIdAndColoresId(idInfluencer, idInfluencer);
+    }
 }

@@ -22,7 +22,8 @@ import com.ribda_PopShoes.cl.popShoes.assemblers.InfluencerModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Influencer;
 import com.ribda_PopShoes.cl.popShoes.service.InfluencerService;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController

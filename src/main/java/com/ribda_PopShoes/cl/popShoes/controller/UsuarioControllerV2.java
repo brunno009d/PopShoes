@@ -23,7 +23,8 @@ import com.ribda_PopShoes.cl.popShoes.assemblers.UsuarioModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Usuario;
 import com.ribda_PopShoes.cl.popShoes.service.UsuarioService;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController

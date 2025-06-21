@@ -22,7 +22,8 @@ import com.ribda_PopShoes.cl.popShoes.assemblers.EstiloModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Estilo;
 import com.ribda_PopShoes.cl.popShoes.service.EstiloService;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
@@ -58,22 +59,30 @@ public class EstiloControllerV2 {
         return ResponseEntity.ok(assembler.toModel(estilo));
     }
 
-    @GetMapping("/influencer/{influencerId}")
-    public ResponseEntity<List<Estilo>> buscarEstiloPorInfluencer(@PathVariable Long influencerId){
-        List<Estilo> estilos = estiloService.obtenerEstilosPorInfluencerId(influencerId);
-        if (estilos.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(estilos);
+    @GetMapping(value = "/influencer/{influencerId}", produces = MediaTypes.HAL_JSON_VALUE)
+    public CollectionModel<EntityModel<Estilo>> buscarEstiloPorInfluencer(@PathVariable Long influencerId){
+        List<EntityModel<Estilo>> estilos = estiloService.obtenerEstilosPorInfluencerId(influencerId)
+            .stream()
+            .map(assembler::toModel)
+            .collect(Collectors.toList());
+
+        return CollectionModel.of(
+            estilos,
+            linkTo(methodOn(EstiloControllerV2.class).buscarEstiloPorInfluencer(influencerId)).withSelfRel()
+        );
     }
 
-    @GetMapping("/color/{colorId}")
-    public ResponseEntity<List<Estilo>> buscarEstiloPorColor(@PathVariable Long colorId){
-        List<Estilo> estilos = estiloService.obtenerEstilosPorColorId(colorId);
-        if (estilos.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(estilos);
+    @GetMapping(value = "/color/{colorId}", produces = MediaTypes.HAL_JSON_VALUE)
+    public CollectionModel<EntityModel<Estilo>> buscarEstiloPorColor(@PathVariable Long colorId){
+        List<EntityModel<Estilo>> estilos = estiloService.obtenerEstilosPorColorId(colorId)
+            .stream()
+            .map(assembler::toModel)
+            .collect(Collectors.toList());
+
+        return CollectionModel.of(
+            estilos,
+            linkTo(methodOn(EstiloControllerV2.class).buscarEstiloPorColor(colorId)).withSelfRel()
+        );
     }
 
     @GetMapping(value = "/influencer/{i_id}/color/{c_id}", produces = MediaTypes.HAL_JSON_VALUE)

@@ -27,7 +27,8 @@ import com.ribda_PopShoes.cl.popShoes.assemblers.ColorModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Color;
 import com.ribda_PopShoes.cl.popShoes.service.ColorService;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController

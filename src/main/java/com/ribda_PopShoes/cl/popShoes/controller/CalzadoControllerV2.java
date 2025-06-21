@@ -24,7 +24,8 @@ import com.ribda_PopShoes.cl.popShoes.assemblers.CalzadoModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Calzado;
 import com.ribda_PopShoes.cl.popShoes.service.CalzadoService;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController

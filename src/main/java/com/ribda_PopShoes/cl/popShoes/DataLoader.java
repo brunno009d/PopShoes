@@ -1,5 +1,6 @@
 package com.ribda_PopShoes.cl.popShoes;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -90,20 +91,23 @@ public class DataLoader implements CommandLineRunner{
         List<Color> colores = colorRepository.findAll();
         List<Influencer> influencers = influencerRepository.findAll();
 
+        List<String> nombresEstilos = new ArrayList<>(List.of("Casual", "Informal", "Deportivo", "Formal", "Urbano"));
+
         for(int i = 0; i < 3; i++){
             Estilo estilo = new Estilo();
             estilo.setId(i + 1);
-            estilo.setNombre(faker.options().option("Casual", "Informal", "Deportivo", "Formal", "Urbano"));
+            estilo.setNombre(nombresEstilos.get(i));
             estilo.setDescripcion(faker.lorem().sentence());
             estilo.setColores(getRandomSubset(colores, 2));
             estilo.setInfluencers(getRandomSubset(influencers, 2));
             estiloRepository.save(estilo);
         }
 
+        List<String> nombresCategorias = new ArrayList<>(List.of("Hombre", "Mujer", "Unisex"));
         for(int i = 0; i < 3; i++){
             Categoria categoria = new Categoria();
             categoria.setId(i + 1);
-            categoria.setNombre(faker.commerce().department());
+            categoria.setNombre(nombresCategorias.get(i));
             categoriaRepository.save(categoria);
         }
 
@@ -119,10 +123,13 @@ public class DataLoader implements CommandLineRunner{
         List<Estilo> estilos = estiloRepository.findAll();
 
         // calzado
-        for(int i = 0; i < 3; i++){
+        List<String> nombresCalzados = new ArrayList<>(List.of("Air Force 1", "Seude XL", "Old Skool", "Forum"));
+
+
+        for(int i = 0; i < 4; i++){
         Calzado calzado = new Calzado();
         calzado.setId(i + 1);
-        calzado.setNombre(faker.options().option("Air Force 1", "Seude XL", "Jordan", "Campus"));
+        calzado.setNombre(nombresCalzados.get(i));
         calzado.setTalla(faker.number().numberBetween(36, 45));
         calzado.setEstilo(estilos.get(random.nextInt(estilos.size())));
         calzado.setCategoria(categorias.get(random.nextInt(categorias.size())));
@@ -151,7 +158,6 @@ public class DataLoader implements CommandLineRunner{
         }
     }
 
-    // Utilidad para obtener subconjuntos aleatorios
     private <T> List<T> getRandomSubset(List<T> lista, int cantidad) {
         Set<T> resultado = new HashSet<>();
         while (resultado.size() < cantidad && resultado.size() < lista.size()) {

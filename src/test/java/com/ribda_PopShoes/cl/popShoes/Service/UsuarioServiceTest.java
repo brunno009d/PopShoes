@@ -41,7 +41,7 @@ public class UsuarioServiceTest {
         List<Calzado> calzados = new ArrayList<>();
         calzados.add(calzado);
 
-        return new Usuario(1, "pepito", "Rojas", "Soto", "pepitolol", "123pep", "Avenida Pepito", 123456789, new Rol(), new Estilo(), calzados);
+        return new Usuario(1, "pepito", "Rojas", "Soto", "pepitolol", "123pep", "Avenida Pepito", 123456789, new Rol(), calzados);
     }
 
     @Test

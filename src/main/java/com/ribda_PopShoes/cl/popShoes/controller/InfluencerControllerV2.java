@@ -46,10 +46,10 @@ public class InfluencerControllerV2 {
         return ResponseEntity.ok(CollectionModel.of(
             influencers,
             linkTo(methodOn(InfluencerControllerV2.class).listar()).withSelfRel()
-            ));
+        ));
     }
 
-    @GetMapping(value = "/id", produces = MediaTypes.HAL_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<Influencer>> buscarInfluencerPorId(@PathVariable Long id){
         Influencer influencer = influencerService.obtenerInfluencerPorId(id);
         if (influencer == null){

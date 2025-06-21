@@ -17,5 +17,27 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
             """)
     List<Object[]> findUsuarioConEstiloRolYCalzados();
 
+    @Query("""
+            SELECT u.id, u.nombre, u.apaterno, u.amaterno, e.nombre, i.nombre
+            FROM Usuario u
+            JOIN u.calzados c
+            JOIN c.estilo e
+            JOIN e.influencers i
+            ORDER BY u.id
+
+            """)
+    List<Object[]> findUsuarioConInfluencer();
+
+    @Query("""
+            SELECT u.id, u.nombre, u.apaterno, u.amaterno, e.nombre, co.nombre
+            FROM Usuario u
+            JOIN u.calzados c
+            JOIN c.estilo e
+            JOIN e.colores co
+            ORDER BY u.id
+
+            """)
+    List<Object[]> findUsuarioConColor();
+
 
 }

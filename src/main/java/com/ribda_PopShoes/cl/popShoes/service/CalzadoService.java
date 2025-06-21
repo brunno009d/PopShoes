@@ -2,6 +2,7 @@ package com.ribda_PopShoes.cl.popShoes.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -84,6 +85,56 @@ public class CalzadoService {
 
         }
         return lista;
+    }
+
+        public List<Map<String, Object>> obtenerCalzadosConColores(){
+        List<Object[]> resultados = calzadoRepository.findCalzadoConColor();
+        List<Map<String, Object>> lista = new ArrayList<>();
+
+        for (Object[] fila : resultados) {
+            Map<String, Object> datos = new LinkedHashMap<>();
+            datos.put("id_calzado", fila[0]);
+            datos.put("nombre_calzado", fila[1]);
+            datos.put("talla", fila[2]);
+            datos.put("marca", fila[3]);
+            datos.put("estilo", fila[4]);
+            datos.put("color", fila[5]);
+            datos.put("cantidad_usuario", fila[6]);
+            lista.add(datos);
+
+        }
+        return lista;
+    }
+
+        public List<Map<String, Object>> obtenerCalzadosConInfluencer(){
+        List<Object[]> resultados = calzadoRepository.findCalzadoConInfluencer();
+        List<Map<String, Object>> lista = new ArrayList<>();
+
+        for (Object[] fila : resultados) {
+            Map<String, Object> datos = new LinkedHashMap<>();
+            datos.put("id_calzado", fila[0]);
+            datos.put("nombre_calzado", fila[1]);
+            datos.put("talla", fila[2]);
+            datos.put("marca", fila[3]);
+            datos.put("estilo", fila[4]);
+            datos.put("influencer", fila[5]);
+            datos.put("cantidad_usuario", fila[6]);
+            lista.add(datos);
+
+        }
+        return lista;
+    }
+
+    public List<Calzado> findByCalzadoNombreAndTalla(String nombre, Integer numero){
+        return calzadoRepository.findByNombreAndTalla(nombre, numero);
+    }
+
+    public List<Calzado> findByCaregoriaIdAndMarcaId(Integer idCategoria, Integer idMarca){
+        return calzadoRepository.findByCategoriaIdAndMarcaId(idCategoria, idMarca);
+    }
+
+    public List<Calzado> findByEstiloIdAndCategoriaId(Integer idEstilo, Integer idCategoria){
+        return calzadoRepository.findByEstiloIdAndCategoriaId(idEstilo, idCategoria);
     }
 
 }

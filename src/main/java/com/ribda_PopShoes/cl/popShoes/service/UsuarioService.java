@@ -2,6 +2,7 @@ package com.ribda_PopShoes.cl.popShoes.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +101,7 @@ public class UsuarioService {
         List<Map<String, Object>> lista = new ArrayList<>();
 
         for (Object[] fila : resultados) {
-            Map<String, Object> datos = new HashMap<>();
+            Map<String, Object> datos = new LinkedHashMap<>();
             datos.put("id", fila[0]);
             datos.put("usuario", fila[1]);
             datos.put("nombre", fila[2]);
@@ -108,12 +109,47 @@ public class UsuarioService {
             datos.put("amaterno", fila[4]);
             datos.put("direccion", fila[5]);
             datos.put("telefono", fila[6]);
-            datos.put("rol", fila[8]);
-            datos.put("calzados", fila[9]);
+            datos.put("rol", fila[7]);
+            datos.put("calzados", fila[8]);
             lista.add(datos);
         }
 
         return lista;
+    }
+
+    public List<Map<String, Object>> obtenerUsuarioConInfluencers(){
+        List<Object[]> resultados = usuarioRepository.findUsuarioConInfluencer();
+        List<Map<String, Object>> lista = new ArrayList<>();
+
+        for (Object[] fila : resultados){
+            Map<String, Object> datos = new LinkedHashMap<>();
+            datos.put("id_usuario", fila[0]);
+            datos.put("nombre_usuario", fila[1]);
+            datos.put("apaterno", fila[2]);
+            datos.put("amaterno", fila[3]);
+            datos.put("estilo", fila[4]);
+            datos.put("influencer", fila[5]);
+            lista.add(datos);
+        }
+        return lista;
+    }
+
+    public List<Map<String, Object>> obtenerUsuarioConColores(){
+        List<Object[]> resultados = usuarioRepository.findUsuarioConColor();
+        List<Map<String, Object>> lista = new ArrayList<>();
+
+        for (Object[] fila : resultados){
+            Map<String, Object> datos = new LinkedHashMap<>();
+            datos.put("id_usuario", fila[0]);
+            datos.put("nombre_usuario", fila[1]);
+            datos.put("apaterno", fila[2]);
+            datos.put("amaterno", fila[3]);
+            datos.put("estilo", fila[4]);
+            datos.put("color", fila[5]);
+            lista.add(datos);
+        }
+        return lista;
+        
     }
 
 

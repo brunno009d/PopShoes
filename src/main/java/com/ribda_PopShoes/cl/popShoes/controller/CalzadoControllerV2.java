@@ -2,6 +2,7 @@ package com.ribda_PopShoes.cl.popShoes.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +60,47 @@ public class CalzadoControllerV2 {
         return ResponseEntity.ok(assembler.toModel(calzado));
     }
 
-    @GetMapping("/resumen")
-    public ResponseEntity<List<Map<String, Object>>> resumen(){
+    @GetMapping(value = "/{nombre}/talla/{numero}", produces = MediaTypes.HAL_JSON_VALUE)
+    public CollectionModel<EntityModel<Calzado>> buscarCalzadoPorNombreYTalla(@PathVariable String nombre, @PathVariable Integer numero){
+        List<EntityModel<Calzado>> calzados = calzadoService.findByCalzadoNombreAndTalla(nombre, numero)
+            .stream()
+            .map(assembler::toModel)
+            .collect(Collectors.toList());
+
+        return CollectionModel.of(
+            calzados,
+            linkTo(methodOn(CalzadoControllerV2.class).buscarCalzadoPorNombreYTalla(nombre, numero)).withSelfRel()
+        );
+    }
+
+    @GetMapping(value = "/categoria/{c_id}/marca/{m_id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public CollectionModel<EntityModel<Calzado>> buscarCalzadoPorCategoriaYMarca(@PathVariable Integer c_id, @PathVariable Integer m_id){
+            List<EntityModel<Calzado>> calzados = calzadoService.findByCaregoriaIdAndMarcaId(c_id, m_id)
+            .stream()
+            .map(assembler::toModel)
+            .collect(Collectors.toList());
+
+        return CollectionModel.of(
+            calzados,
+            linkTo(methodOn(CalzadoControllerV2.class).buscarCalzadoPorCategoriaYMarca(c_id, m_id)).withSelfRel()
+        );
+    }
+
+    @GetMapping(value = "/estilo/{e_id}/categoria/{c_id}", produces = MediaTypes.HAL_JSON_VALUE)
+    public CollectionModel<EntityModel<Calzado>> buscarCalzadoPorEstiloYCategoria(@PathVariable Integer e_id,@PathVariable Integer c_id){
+            List<EntityModel<Calzado>> calzados = calzadoService.findByEstiloIdAndCategoriaId(e_id, c_id)
+            .stream()
+            .map(assembler::toModel)
+            .collect(Collectors.toList());
+
+        return CollectionModel.of(
+            calzados,
+            linkTo(methodOn(CalzadoControllerV2.class).buscarCalzadoPorEstiloYCategoria(e_id, c_id)).withSelfRel()
+        );
+    }
+
+    @GetMapping("/resumen-calzado")
+    public ResponseEntity<List<Map<String, Object>>> resumenCalzado(){
         List<Map<String, Object>> resumen = calzadoService.obtenerCalzadosConNombres();
         if (resumen.isEmpty()){
             return ResponseEntity.noContent().build();
@@ -68,6 +108,23 @@ public class CalzadoControllerV2 {
         return ResponseEntity.ok(resumen);
     }
 
+    @GetMapping("/resumen-calzado-color")
+    public ResponseEntity<List<Map<String, Object>>> resumenCalzadoColor(){
+        List<Map<String, Object>> resumen = calzadoService.obtenerCalzadosConColores();
+        if (resumen.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resumen);
+    }
+
+    @GetMapping("/resumen-calzado-influencer")
+    public ResponseEntity<List<Map<String, Object>>> resumenCalzadoInfluencer(){
+        List<Map<String, Object>> resumen = calzadoService.obtenerCalzadosConInfluencer();
+        if (resumen.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resumen);
+    }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<Calzado>> guardar(@RequestBody Calzado calzado){

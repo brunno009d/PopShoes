@@ -51,6 +51,15 @@ public class UsuarioController {
         return ResponseEntity.ok(resumen);
     }
 
+    @GetMapping("/resumen-usuario-influencer")
+    public ResponseEntity<List<Map<String, Object>>> resumenUsuarioInfluencer(){
+        List<Map<String, Object>> resumen = usuarioService.obtenerUsuarioConInfluencers();
+        if (resumen.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resumen);
+    }
+
     @PostMapping
     public ResponseEntity<Usuario> guardar(@RequestBody Usuario usuario){
         Usuario nuevoUsuario = usuarioService.guardarUsuario(usuario);

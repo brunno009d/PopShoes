@@ -59,7 +59,7 @@ public class UsuarioControllerV2 {
         return ResponseEntity.ok(assembler.toModel(usuario));
     }
 
-    @GetMapping("/resumen")
+    @GetMapping("/resumen-usuario")
     public ResponseEntity<List<Map<String, Object>>> resumen(){
         List<Map<String, Object>> resumen = usuarioService.obtenerUsuarioConNombres();
         if (resumen.isEmpty()){
@@ -67,6 +67,25 @@ public class UsuarioControllerV2 {
         }
         return ResponseEntity.ok(resumen);
     }
+
+    @GetMapping("/resumen-usuario-influencer")
+    public ResponseEntity<List<Map<String, Object>>> resumenUsuarioInfluencer(){
+        List<Map<String, Object>> resumen = usuarioService.obtenerUsuarioConInfluencers();
+        if (resumen.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resumen);
+    }
+
+    @GetMapping("/resumen-usuario-color")
+    public ResponseEntity<List<Map<String, Object>>> resumenUsuarioColor(){
+        List<Map<String, Object>> resumen = usuarioService.obtenerUsuarioConColores();
+        if (resumen.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(resumen);
+    }
+
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
     public ResponseEntity<EntityModel<Usuario>> guardar(@RequestBody Usuario usuario){

@@ -49,8 +49,6 @@ public interface CalzadoRepository extends JpaRepository<Calzado ,Long> {
 
     List<Calzado> findByUsuarios_Id(Long usuarioId);
     List<Calzado> findByEstilo_Id(Long estiloId);
-    
-    void deleteByEstilo(Estilo estilo);
 
 
 }

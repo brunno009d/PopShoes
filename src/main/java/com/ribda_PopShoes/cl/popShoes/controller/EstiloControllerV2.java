@@ -22,12 +22,16 @@ import com.ribda_PopShoes.cl.popShoes.assemblers.EstiloModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Estilo;
 import com.ribda_PopShoes.cl.popShoes.service.EstiloService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
 @RequestMapping("/api/v2/estilos")
+@Tag(name = "Api que administra los estilos")
 public class EstiloControllerV2 {
     @Autowired
     private EstiloService estiloService;
@@ -36,6 +40,7 @@ public class EstiloControllerV2 {
     private EstiloModelAssembler assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama a todos los estilos", description = "Esta api se encarga de obtener todos los usuarios que hay")
     public ResponseEntity<CollectionModel<EntityModel<Estilo>>> listar(){
         List<EntityModel<Estilo>> estilos = estiloService.obtenerEstilos().stream()
             .map(assembler::toModel)
@@ -51,6 +56,7 @@ public class EstiloControllerV2 {
     }
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama a un estilo por su id", description = "Esta api se encarga de obtener un estilo por id")
     public ResponseEntity<EntityModel<Estilo>> buscarEstiloPorId(@PathVariable Long id){
         Estilo estilo = estiloService.obtenerEstiloPorId(id);
         if(estilo == null){
@@ -60,6 +66,7 @@ public class EstiloControllerV2 {
     }
 
     @GetMapping(value = "/influencer/{influencerId}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama a un estilo por la id de un influencer", description = "Esta api se encarga de obtener un estilo por la id de influencer")
     public CollectionModel<EntityModel<Estilo>> buscarEstiloPorInfluencer(@PathVariable Long influencerId){
         List<EntityModel<Estilo>> estilos = estiloService.obtenerEstilosPorInfluencerId(influencerId)
             .stream()
@@ -73,6 +80,7 @@ public class EstiloControllerV2 {
     }
 
     @GetMapping(value = "/color/{colorId}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama a un estilo por la id de un color", description = "Esta api se encarga de obtener un estilo por la id de un color")
     public CollectionModel<EntityModel<Estilo>> buscarEstiloPorColor(@PathVariable Long colorId){
         List<EntityModel<Estilo>> estilos = estiloService.obtenerEstilosPorColorId(colorId)
             .stream()
@@ -86,6 +94,7 @@ public class EstiloControllerV2 {
     }
 
     @GetMapping(value = "/influencer/{i_id}/color/{c_id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama a un estilo por la id de un influencer y color", description = "Esta api se encarga de obtener un estilo por la id de un influencer y color")
     public CollectionModel<EntityModel<Estilo>> buscarEstiloPorInfluencerYColor(@PathVariable Integer i_id, @PathVariable Integer c_id){
         List<EntityModel<Estilo>> estilos = estiloService.findByInfluencerIdAndColorId(i_id, c_id)
         .stream()
@@ -99,6 +108,7 @@ public class EstiloControllerV2 {
     }
 
     @PostMapping(produces =  MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api crea estilos", description = "Esta api se encarga de crear un nuevo estilo")
     public ResponseEntity<EntityModel<Estilo>> guardar(@RequestBody Estilo estilo){
         Estilo nuevoEstilo = estiloService.guardarEstilo(estilo);
 
@@ -108,6 +118,7 @@ public class EstiloControllerV2 {
     }
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api actualiza un estilo", description = "Esta api se encarga de actualizar un estilo existente")
     public ResponseEntity<EntityModel<Estilo>> actualizar(@PathVariable Long id, @RequestBody Estilo estilo){
         estilo.setId((id.intValue()));
         Estilo actEstilo = estiloService.actualizarEstilo(id, estilo);
@@ -118,6 +129,7 @@ public class EstiloControllerV2 {
     }
 
     @PatchMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api actualiza parcialmente un estilo", description = "esta api se encarga de actualizar parcialmente un estilo existente")
     public ResponseEntity<EntityModel<Estilo>> editar(@PathVariable Long id, @RequestBody Estilo estilo){
         Estilo actEstilo = estiloService.actualizarEstiloParcial(id, estilo);
         if (actEstilo == null){
@@ -127,6 +139,7 @@ public class EstiloControllerV2 {
     }
     
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api elimina un estilo", description = "esta api se encarga de eliminar un estilo existente")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         Estilo eEstilo = estiloService.obtenerEstiloPorId(id);
         if (eEstilo == null){

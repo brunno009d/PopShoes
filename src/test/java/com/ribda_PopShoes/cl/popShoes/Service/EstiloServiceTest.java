@@ -1,6 +1,7 @@
 package com.ribda_PopShoes.cl.popShoes.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -89,5 +90,39 @@ public class EstiloServiceTest {
         doNothing().when(estiloRepository).deleteById(1L);
         estiloService.eliminarEstilo(1L);
         verify(estiloRepository, times(1)).deleteById(1L);
+    }
+
+        @Test
+    public void testFindByInfluencersId(){
+        Long influencerId = 1L;
+        when(estiloRepository.findByInfluencers_Id(influencerId)).thenReturn(List.of(crearEstilo()));
+        List<Estilo> estilos = estiloService.obtenerEstilosPorInfluencerId(influencerId);
+        assertNotNull(estilos);
+        assertEquals(1, estilos.size());
+        assertEquals("casual", estilos.get(0).getNombre());
+        verify(estiloRepository, times(1)).findByInfluencers_Id(influencerId);
+    }
+
+    @Test
+    public void testFindByColoresId(){
+        Long colorId = 1L;
+        when(estiloRepository.findByColores_Id(colorId)).thenReturn(List.of(crearEstilo()));
+        List<Estilo> estilos = estiloService.obtenerEstilosPorColorId(colorId);
+        assertNotNull(estilos);
+        assertEquals(1, estilos.size());
+        assertEquals("casual", estilos.get(0).getNombre());
+        verify(estiloRepository, times(1)).findByColores_Id(colorId);
+    }
+
+    @Test
+    public void testFindByInfluencersIdAndColoresId(){
+        Integer idInfluencer = 1;
+        Integer idColor = 1;
+        when(estiloRepository.findByInfluencersIdAndColoresId(idInfluencer, idColor)).thenReturn(List.of(crearEstilo()));
+        List<Estilo> estilos = estiloService.findByInfluencerIdAndColorId(idInfluencer, idColor);
+        assertNotNull(estilos);
+        assertEquals(1, estilos.size());
+        assertEquals("casual", estilos.get(0).getNombre());
+        verify(estiloRepository, times(1)).findByInfluencersIdAndColoresId(idInfluencer, idColor);
     }
 }

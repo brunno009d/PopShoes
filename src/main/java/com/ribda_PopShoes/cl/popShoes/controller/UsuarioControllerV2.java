@@ -23,12 +23,16 @@ import com.ribda_PopShoes.cl.popShoes.assemblers.UsuarioModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Usuario;
 import com.ribda_PopShoes.cl.popShoes.service.UsuarioService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
 @RequestMapping("/api/v2/usuarios")
+@Tag(name = "Api que administra los usuarios")
 public class UsuarioControllerV2 {
     @Autowired
     private UsuarioService usuarioService;
@@ -37,6 +41,7 @@ public class UsuarioControllerV2 {
     private UsuarioModelAssembler assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama a todos los usuarios", description = "Esta api se encarga de obtener todos los usuarios que hay")
     public ResponseEntity<CollectionModel<EntityModel<Usuario>>> listar(){
         List<EntityModel<Usuario>> usuarios = usuarioService.obtenerUsuarios().stream()
         .map(assembler::toModel)
@@ -52,6 +57,7 @@ public class UsuarioControllerV2 {
     }
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama a un usuario por su id", description = "Esta api se encarga de obtener un usuario por id")
     public ResponseEntity<EntityModel<Usuario>> buscarUsuarioPorId(@PathVariable Long id){
         Usuario usuario = usuarioService.obtenerUsuarioPorId(id);
         if (usuario == null){
@@ -61,6 +67,7 @@ public class UsuarioControllerV2 {
     }
 
     @GetMapping("/resumen-usuario")
+    @Operation(summary = "Esta api muestra usuarios con sus calzados", description = "Esta api se encarga de mostrar usuarios con sus calzados")
     public ResponseEntity<List<Map<String, Object>>> resumen(){
         List<Map<String, Object>> resumen = usuarioService.obtenerUsuarioConNombres();
         if (resumen.isEmpty()){
@@ -70,6 +77,7 @@ public class UsuarioControllerV2 {
     }
 
     @GetMapping("/resumen-usuario-influencer")
+    @Operation(summary = "Esta api muestra usuarios con sus influencers", description = "Esta api se encarga de mostrar usuarios con sus influencers")
     public ResponseEntity<List<Map<String, Object>>> resumenUsuarioInfluencer(){
         List<Map<String, Object>> resumen = usuarioService.obtenerUsuarioConInfluencers();
         if (resumen.isEmpty()){
@@ -79,6 +87,7 @@ public class UsuarioControllerV2 {
     }
 
     @GetMapping("/resumen-usuario-color")
+    @Operation(summary = "Esta api muestra usuarios con sus colores", description = "Esta api se encarga de mostrar usuarios con sus colores")
     public ResponseEntity<List<Map<String, Object>>> resumenUsuarioColor(){
         List<Map<String, Object>> resumen = usuarioService.obtenerUsuarioConColores();
         if (resumen.isEmpty()){
@@ -89,6 +98,7 @@ public class UsuarioControllerV2 {
 
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api crea usuarios", description = "Esta api se encarga de crear un nuevo usuario")
     public ResponseEntity<EntityModel<Usuario>> guardar(@RequestBody Usuario usuario){
         Usuario nuevoUsuario = usuarioService.guardarUsuario(usuario);
         
@@ -98,6 +108,7 @@ public class UsuarioControllerV2 {
     }
 
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api actualiza un usuario", description = "Esta api se encarga de actualizar un usuario existente")
     public ResponseEntity<EntityModel<Usuario>> actualizar(@PathVariable Long id, @RequestBody Usuario usuario){
         usuario.setId(id.intValue());
         Usuario actulizarUsuario = usuarioService.actualizUsuario(id, usuario);
@@ -108,6 +119,7 @@ public class UsuarioControllerV2 {
     }
 
     @PatchMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api actualiza parcialmente un usuario", description = "esta api se encarga de actualizar parcialmente un usuario existente")
     public ResponseEntity<EntityModel<Usuario>> editar(@PathVariable Long id, @RequestBody Usuario usuario){
         Usuario actualizarUsuario = usuarioService.actualizarUsuarioParcial(id, usuario);
         if(actualizarUsuario == null){
@@ -117,6 +129,7 @@ public class UsuarioControllerV2 {
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api elimina un usuario", description = "esta api se encarga de eliminar un usuario existente")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         Usuario eUsuario = usuarioService.obtenerUsuarioPorId(id);
         if(eUsuario == null){

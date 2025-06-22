@@ -27,12 +27,16 @@ import com.ribda_PopShoes.cl.popShoes.assemblers.ColorModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Color;
 import com.ribda_PopShoes.cl.popShoes.service.ColorService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
 @RequestMapping("/api/v2/colores")
+@Tag(name = "Api que administra los colores")
 public class ColorControllerV2 {
     @Autowired
     private ColorService colorService;
@@ -41,6 +45,7 @@ public class ColorControllerV2 {
     private ColorModelAssembler assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama a todos los colores", description = "Esta api se encarga de obtener todos los colores que hay")
     public ResponseEntity<CollectionModel<EntityModel<Color>>> listar(){
     List<EntityModel<Color>> colores = colorService.obtenerColores().stream()
         .map(assembler::toModel)
@@ -56,6 +61,7 @@ public class ColorControllerV2 {
     }
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama un color por Id", description = "Esta api se encarga de obtener un color por id")
     public ResponseEntity<EntityModel<Color>> buscarColorPorId(@PathVariable Long id){
         Color color = colorService.obtenerColorPorId(id);
         if (color == null){
@@ -65,6 +71,7 @@ public class ColorControllerV2 {
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api crea colores", description = "Esta api se encarga de crear un nuevo color")
     public ResponseEntity<EntityModel<Color>> guardar(@RequestBody Color color){
         Color colorNuevo = colorService.guardarColor(color);
         
@@ -74,6 +81,7 @@ public class ColorControllerV2 {
     }   
     
     @PutMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api actualiza un color", description = "Esta api se encarga de actualizar un color existente")
     public ResponseEntity<EntityModel<Color>> actualizar(@PathVariable Long id, @RequestBody Color color){
         color.setId(id.intValue());
         Color actColor = colorService.actualizarColor(id, color);
@@ -84,6 +92,7 @@ public class ColorControllerV2 {
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api elimina un color", description = "esta api se encarga de eliminar un color existente")
     public ResponseEntity<Void> elminar(@PathVariable Long id){
         Color eColor = colorService.obtenerColorPorId(id);
         if (eColor == null){

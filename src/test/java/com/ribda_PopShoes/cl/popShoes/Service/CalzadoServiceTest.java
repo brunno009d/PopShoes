@@ -97,4 +97,38 @@ public class CalzadoServiceTest {
         verify(calzadoRepository, times(1)).findById(1L);
         verify(calzadoRepository, times(1)).save(any(Calzado.class));
     }
+
+    @Test
+    public void testFindByNombreAndTalla(){
+        String nombre = "Air Force 1";
+        Integer talla = 40;
+        when(calzadoRepository.findByNombreAndTalla(nombre, talla)).thenReturn(List.of(crearCalzado()));
+        List<Calzado> calzados = calzadoService.findByCalzadoNombreAndTalla(nombre, talla);
+        assertNotNull(calzados);
+        assertEquals(1, calzados.size());
+        assertEquals(nombre, calzados.get(0).getNombre());
+        assertEquals(talla, calzados.get(0).getTalla());
+    }
+
+    @Test
+    public void testFindByCategoriaIdAndMarcaId(){
+        Integer idCategoria = 1;
+        Integer idMarca = 1;
+        when(calzadoRepository.findByCategoriaIdAndMarcaId(idCategoria, idMarca)).thenReturn(List.of(crearCalzado()));
+        List<Calzado> calzados = calzadoService.findByCaregoriaIdAndMarcaId(idCategoria, idMarca);
+        assertNotNull(calzados);
+        assertEquals(1, calzados.size());
+        verify(calzadoRepository, times(1)).findByCategoriaIdAndMarcaId(idCategoria, idMarca);
+    }
+
+    @Test
+    public void testFindByEstiloIdAndCategoriaId(){
+        Integer idEstilo = 1;
+        Integer idCategoria = 1;
+        when(calzadoRepository.findByEstiloIdAndCategoriaId(idEstilo, idCategoria)).thenReturn(List.of(crearCalzado()));
+        List<Calzado> calzados = calzadoService.findByEstiloIdAndCategoriaId(idEstilo, idCategoria);
+        assertNotNull(calzados);
+        assertEquals(1, calzados.size());
+        verify(calzadoRepository, times(1)).findByEstiloIdAndCategoriaId(idEstilo, idCategoria);
+    }
 }

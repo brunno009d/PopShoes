@@ -43,7 +43,4 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
     List<Usuario> findByCalzados_Id(Integer calzadoId);
     List<Usuario> findByCalzados_Id(Long calzadoId);
 
-
-
-
 }

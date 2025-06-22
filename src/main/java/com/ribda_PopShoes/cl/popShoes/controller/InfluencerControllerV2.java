@@ -22,12 +22,16 @@ import com.ribda_PopShoes.cl.popShoes.assemblers.InfluencerModelAssembler;
 import com.ribda_PopShoes.cl.popShoes.model.Influencer;
 import com.ribda_PopShoes.cl.popShoes.service.InfluencerService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @RestController
 @RequestMapping("/api/v2/influencers")
+@Tag(name = "Api que administra los influencers")
 public class InfluencerControllerV2 {
     @Autowired
     private InfluencerService influencerService;
@@ -36,6 +40,7 @@ public class InfluencerControllerV2 {
     private InfluencerModelAssembler assembler;
 
     @GetMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama a todos los influencers", description = "Esta api se encarga de obtener todos los influencers que hay")
     public ResponseEntity<CollectionModel<EntityModel<Influencer>>> listar() {
         List<EntityModel<Influencer>> influencers = influencerService.obtenerInfluencers().stream()
         .map(assembler::toModel)
@@ -51,6 +56,7 @@ public class InfluencerControllerV2 {
     }
 
     @GetMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api llama un influencer por Id", description = "Esta api se encarga de obtener un influencer por id")
     public ResponseEntity<EntityModel<Influencer>> buscarInfluencerPorId(@PathVariable Long id){
         Influencer influencer = influencerService.obtenerInfluencerPorId(id);
         if (influencer == null){
@@ -60,6 +66,7 @@ public class InfluencerControllerV2 {
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api crea influencers", description = "Esta api se encarga de crear un nuevo influencer")
     public ResponseEntity<EntityModel<Influencer>> guardar(@RequestBody Influencer influencer){
         Influencer nuevoInfluencer = influencerService.guardarInfluencer(influencer);
         
@@ -69,6 +76,7 @@ public class InfluencerControllerV2 {
     }
 
     @PutMapping(value = "/{id}", produces =  MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api actualiza un influencer", description = "Esta api se encarga de actualizar un influencer existente")
     public ResponseEntity<EntityModel<Influencer>> actualizar(@PathVariable Long id, @RequestBody Influencer influencer){
         influencer.setId(id.intValue());
         Influencer actInfluencer = influencerService.actualizarInfluencer(id, influencer);
@@ -79,6 +87,7 @@ public class InfluencerControllerV2 {
     }
 
     @PatchMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api actualiza parcialmente un influencer", description = "esta api se encarga de actualizar parcialmente un influencer existente")
     public ResponseEntity<EntityModel<Influencer>> editar(@PathVariable Long id, @RequestBody Influencer influencer){
         Influencer actInfluencer = influencerService.actualizarInfluencerParcial(id, influencer);
         if (actInfluencer == null){
@@ -88,6 +97,7 @@ public class InfluencerControllerV2 {
     }
 
     @DeleteMapping(value = "/{id}", produces = MediaTypes.HAL_JSON_VALUE)
+    @Operation(summary = "Esta api elimina un influencer", description = "esta api se encarga de eliminar un influencer existente")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         Influencer influencer = influencerService.obtenerInfluencerPorId(id);
         if(influencer == null){

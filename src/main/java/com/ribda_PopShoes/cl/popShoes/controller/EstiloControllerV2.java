@@ -132,7 +132,7 @@ public class EstiloControllerV2 {
         if (eEstilo == null){
             return ResponseEntity.notFound().build();
         }
-        estiloService.ElminarEstilo(id);
+        estiloService.eliminarEstilo(id);
         return ResponseEntity.noContent().build();
     }
 

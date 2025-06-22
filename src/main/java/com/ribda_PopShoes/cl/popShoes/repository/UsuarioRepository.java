@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.ribda_PopShoes.cl.popShoes.model.Calzado;
 import com.ribda_PopShoes.cl.popShoes.model.Usuario;
 
 @Repository
@@ -38,6 +39,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
             """)
     List<Object[]> findUsuarioConColor();
+
+    List<Usuario> findByCalzados_Id(Integer calzadoId);
+    List<Usuario> findByCalzados_Id(Long calzadoId);
+
+
 
 
 }

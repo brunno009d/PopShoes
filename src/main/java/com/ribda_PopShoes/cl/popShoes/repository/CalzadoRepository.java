@@ -7,34 +7,37 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.ribda_PopShoes.cl.popShoes.model.Calzado;
+import com.ribda_PopShoes.cl.popShoes.model.Estilo;
+import com.ribda_PopShoes.cl.popShoes.model.Usuario;
 
 @Repository
 public interface CalzadoRepository extends JpaRepository<Calzado ,Long> {
 
     @Query("""
-            SELECT c, c.estilo.nombre, c.categoria.nombre, c.marca.nombre FROM Calzado c 
+            SELECT c.id, c.nombre, c.estilo.nombre, c.categoria.nombre, c.marca.nombre, COUNT(u.id)
+            FROM Calzado c 
+            LEFT JOIN c.usuarios u
+            GROUP BY c.nombre, c.estilo.nombre, c.categoria.nombre, c.marca.nombre
+            ORDER BY c.id
+
             """)
     List<Object[]> findCalzadoConMarcaYEstiloYCategoria();
 
     @Query("""
-            SELECT c.id, c.nombre, c.talla ,c.marca.nombre, e.nombre, co.nombre, COUNT(u.id)
+            SELECT c.id, c.nombre, c.talla ,c.marca.nombre, e.nombre, co.nombre
             FROM Calzado c
-            left JOIN c.usuarios u
             JOIN c.estilo e
             JOIN e.colores co
-            GROUP BY c.id, c.nombre, c.talla ,c.marca.nombre, e.nombre, co.nombre
             ORDER BY c.id
             
             """)
     List<Object[]> findCalzadoConColor();
 
     @Query("""
-            SELECT c.id, c.nombre, c.talla ,c.marca.nombre, e.nombre, i.nombre, COUNT(u.id)
+            SELECT c.id, c.nombre, c.talla ,c.marca.nombre, e.nombre, i.nombre
             FROM Calzado c
-            left JOIN c.usuarios u
             JOIN c.estilo e
             JOIN e.influencers i
-            GROUP BY c.id, c.nombre, c.talla ,c.marca.nombre, e.nombre, i.nombre
             ORDER BY c.id
             
             """)
@@ -43,6 +46,11 @@ public interface CalzadoRepository extends JpaRepository<Calzado ,Long> {
     List<Calzado> findByNombreAndTalla(String nombre, Integer numero);
     List<Calzado> findByCategoriaIdAndMarcaId(Integer idCategoria, Integer idMarca);
     List<Calzado> findByEstiloIdAndCategoriaId(Integer idEstilo, Integer idCategoria);
+
+    List<Calzado> findByUsuarios_Id(Long usuarioId);
+    List<Calzado> findByEstilo_Id(Long estiloId);
+    
+    void deleteByEstilo(Estilo estilo);
 
 
 }

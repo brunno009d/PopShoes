@@ -1,11 +1,14 @@
 package com.ribda_PopShoes.cl.popShoes.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ribda_PopShoes.cl.popShoes.model.Estilo;
 import com.ribda_PopShoes.cl.popShoes.model.Influencer;
+import com.ribda_PopShoes.cl.popShoes.repository.EstiloRepository;
 import com.ribda_PopShoes.cl.popShoes.repository.InfluencerRepository;
 
 import jakarta.transaction.Transactional;
@@ -16,6 +19,9 @@ import jakarta.transaction.Transactional;
 public class InfluencerService {
     @Autowired
     private InfluencerRepository influencerRepository;
+
+    @Autowired
+    private EstiloRepository estiloRepository;
 
     public List<Influencer> obtenerInfluencers(){
         return influencerRepository.findAll();
@@ -30,7 +36,18 @@ public class InfluencerService {
     }
 
     public void eliminarInfluencer(Long id){
-        influencerRepository.deleteById(id);
+        Influencer influencer = influencerRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Influencer no encontrado"));
+
+        List<Estilo> estilos = new ArrayList<>(influencer.getEstilos());
+        for (Estilo estilo : estilos) {
+            estilo.getInfluencers().remove(influencer);
+            estiloRepository.save(estilo);
+        }
+
+        influencer.getEstilos().clear();
+        influencerRepository.save(influencer);
+        influencerRepository.delete(influencer);
     }
 
     public Influencer actualizarInfluencer(Long id, Influencer influencer){

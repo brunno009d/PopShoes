@@ -85,7 +85,7 @@ public class EstiloController {
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
-        estiloService.ElminarEstilo(id);
+        estiloService.eliminarEstilo(id);
         return ResponseEntity.noContent().build();
     }
 

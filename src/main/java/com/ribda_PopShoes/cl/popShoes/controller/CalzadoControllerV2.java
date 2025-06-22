@@ -162,7 +162,7 @@ public class CalzadoControllerV2 {
             return ResponseEntity.notFound().build();
         }
         
-        calzadoService.elminarCalzado(id);
+        calzadoService.eliminarCalzado(id);
         return ResponseEntity.noContent().build();
     }
 

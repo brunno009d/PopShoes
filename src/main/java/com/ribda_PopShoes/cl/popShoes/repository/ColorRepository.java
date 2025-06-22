@@ -10,6 +10,6 @@ import com.ribda_PopShoes.cl.popShoes.model.Color;
 
 @Repository
 public interface ColorRepository extends JpaRepository<Color, Long> {
-
+    List<Color> findByEstilos_Id(Long estiloId);
 
 }

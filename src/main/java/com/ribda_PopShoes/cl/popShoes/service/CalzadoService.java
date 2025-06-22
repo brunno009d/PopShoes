@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ribda_PopShoes.cl.popShoes.model.Calzado;
+import com.ribda_PopShoes.cl.popShoes.model.Usuario;
 import com.ribda_PopShoes.cl.popShoes.repository.CalzadoRepository;
+import com.ribda_PopShoes.cl.popShoes.repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -19,6 +21,9 @@ import jakarta.transaction.Transactional;
 public class CalzadoService {
     @Autowired
     private CalzadoRepository calzadoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<Calzado> obtenerCalzados(){
         return calzadoRepository.findAll();
@@ -32,8 +37,19 @@ public class CalzadoService {
         return calzadoRepository.save(calzado);
     }
 
-    public void elminarCalzado(Long id){
-        calzadoRepository.deleteById(id);
+    public void eliminarCalzado(Long id){
+        Calzado calzado = calzadoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Calzado no encontrado"));
+
+        List<Usuario> usuarios = usuarioRepository.findByCalzados_Id(id);
+        for (Usuario usuario : usuarios) {
+            usuario.getCalzados().remove(calzado);
+            usuarioRepository.save(usuario);
+        }
+
+        calzado.getUsuarios().clear();
+        calzadoRepository.save(calzado);
+        calzadoRepository.delete(calzado);
     }
 
     public Calzado actualizarCalzado(Long id, Calzado calzado){
@@ -76,11 +92,13 @@ public class CalzadoService {
         List<Map<String, Object>> lista = new ArrayList<>();
 
         for (Object[] fila : resultados) {
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("calzado", fila[0]);
-            datos.put("nombreMarca", fila[1]);
-            datos.put("nombreCategoria", fila[2]);
-            datos.put("nombreEstilo", fila[3]);
+            Map<String, Object> datos = new LinkedHashMap<>();
+            datos.put("id_clazado", fila[0]);
+            datos.put("nombre_calzado", fila[1]);
+            datos.put("nombre_estilo", fila[2]);
+            datos.put("nombre_categoria", fila[3]);
+            datos.put("nombre_carca", fila[4]);
+            datos.put("cantidad_usuarios", fila[5]);
             lista.add(datos);
 
         }
@@ -99,7 +117,6 @@ public class CalzadoService {
             datos.put("marca", fila[3]);
             datos.put("estilo", fila[4]);
             datos.put("color", fila[5]);
-            datos.put("cantidad_usuario", fila[6]);
             lista.add(datos);
 
         }
@@ -118,7 +135,6 @@ public class CalzadoService {
             datos.put("marca", fila[3]);
             datos.put("estilo", fila[4]);
             datos.put("influencer", fila[5]);
-            datos.put("cantidad_usuario", fila[6]);
             lista.add(datos);
 
         }

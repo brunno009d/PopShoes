@@ -11,10 +11,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ribda_PopShoes.cl.popShoes.repository.CalzadoRepository;
 import com.ribda_PopShoes.cl.popShoes.repository.UsuarioRepository;
 
 import jakarta.transaction.Transactional;
 
+import com.ribda_PopShoes.cl.popShoes.model.Calzado;
 import com.ribda_PopShoes.cl.popShoes.model.Usuario;;;
 
 @Service
@@ -23,6 +25,9 @@ public class UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CalzadoRepository calzadoRepository;
 
     public List<Usuario> obtenerUsuarios(){
         return usuarioRepository.findAll();
@@ -37,7 +42,16 @@ public class UsuarioService {
     }
 
     public void eliminarUsuario(Long id){
-        usuarioRepository.deleteById(id);
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        List<Calzado> calzados = calzadoRepository.findByUsuarios_Id(id);
+        for (Calzado calzado : calzados) {
+            calzado.getUsuarios().removeIf(u -> u.getId().equals(id));
+            calzadoRepository.save(calzado);
+        }
+
+        usuarioRepository.delete(usuario);
     }
 
     public Usuario actualizUsuario(Long id, Usuario usuario){

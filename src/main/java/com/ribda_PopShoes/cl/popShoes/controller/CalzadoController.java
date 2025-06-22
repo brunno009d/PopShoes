@@ -80,7 +80,7 @@ public class CalzadoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
-        calzadoService.elminarCalzado(id);
+        calzadoService.eliminarCalzado(id);
         return ResponseEntity.noContent().build();
     }
 

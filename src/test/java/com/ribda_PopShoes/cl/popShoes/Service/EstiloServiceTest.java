@@ -87,7 +87,7 @@ public class EstiloServiceTest {
     @Test
     public void testDeleteById(){
         doNothing().when(estiloRepository).deleteById(1L);
-        estiloService.ElminarEstilo(1L);
+        estiloService.eliminarEstilo(1L);
         verify(estiloRepository, times(1)).deleteById(1L);
     }
 }

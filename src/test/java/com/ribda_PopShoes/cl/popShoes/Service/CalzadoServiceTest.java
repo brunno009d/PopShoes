@@ -75,7 +75,7 @@ public class CalzadoServiceTest {
     @Test
     public void testDeleteById(){
         doNothing().when(calzadoRepository).deleteById(1L);
-        calzadoService.elminarCalzado(1L);
+        calzadoService.eliminarCalzado(1L);
         verify(calzadoRepository, times(1)).deleteById(1L);
     }
 
